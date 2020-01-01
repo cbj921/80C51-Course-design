@@ -172,10 +172,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>26</ColumnNumber>
+      <ColumnNumber>25</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>137</TopLine>
-      <CurrentLine>151</CurrentLine>
+      <TopLine>285</TopLine>
+      <CurrentLine>317</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -263,6 +263,20 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\timer.h</PathWithFileName>
       <FilenameWithoutPath>timer.h</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>8</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>0</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\uart.h</PathWithFileName>
+      <FilenameWithoutPath>uart.h</FilenameWithoutPath>
     </File>
   </Group>
 
@@ -1611,21 +1625,15 @@
       <Documents>
         <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>26</ColumnNumber>
-          <TopLine>137</TopLine>
-          <CurrentLine>151</CurrentLine>
+          <ColumnNumber>25</ColumnNumber>
+          <TopLine>285</TopLine>
+          <CurrentLine>317</CurrentLine>
         </Doc>
         <Doc>
           <Name>LED.H</Name>
-          <ColumnNumber>11</ColumnNumber>
+          <ColumnNumber>10</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>14</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>BUZZER.H</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
+          <CurrentLine>30</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>
