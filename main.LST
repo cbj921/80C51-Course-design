@@ -1,9 +1,9 @@
-C51 COMPILER V9.01   MAIN                                                                  01/01/2020 14:22:27 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  01/02/2020 23:49:21 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN main.OBJ
-COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c LARGE BROWSE DEBUG OBJECTEXTEND
 
 line level    source
 
@@ -15,335 +15,441 @@ line level    source
    6          #include "key.h"
    7          #include "led.h"
    8          #include "uart.h"
-   9          
+   9          // 注意事项，使用串口时一定要勾选 “发送新行” 否则出错；设置闹钟要将 “请于” 删除，直接以年份开头
   10          unsigned int test=0;
   11          
   12          unsigned char monthDay[] = {31,28,31,30,31,30,31,31,30,31,30,31}; // 二月暂时按平年算
   13          unsigned char getData;
-  14          unsigned char sdat[32]={0x00}; // 数据缓存区
-  15          unsigned char sp=0;   // 数据缓存区指针
-  16          
-  17          unsigned char keyFlag=0;
-  18          unsigned char countSecond = 0; // 用来计数3秒
-  19          unsigned char ledTime = 0;
-  20          
-  21          // 通过中断来更新以下数据
-  22          unsigned char hour=0,minute=0,second=0,month=1,day=21,week = 0;
-  23          unsigned int year=2020; 
-  24          unsigned char T0Num = 0;
-  25          unsigned char modeFlag = 0; // 0：显示分秒 1：显示公元年  2：显示月日
-  26          
-  27          void updateTimeData();
-  28          void showTime_MS();
-  29          void showTime_Year();
-  30          void stayThreeSecond();
-  31          void showTime_MonthDay();
-  32          void showWeekLed();
-  33          unsigned char getWeek(unsigned int tYear,unsigned char tMonth,unsigned char tDay);
-  34          void dealData(unsigned char *dataGo);
-  35          unsigned char getTimeFromData(unsigned char *dataGo);
-  36          void clearSDAT();
-  37          unsigned char judgeLeapOrOrdinaryYear(unsigned int tYear);
-  38          unsigned char getMonthDay(unsigned char tMonth);
-  39          
-  40          int main()
-  41          {
-  42   1              // init，各项功能初始化
-  43   1              timerInit_0();           // 初始化计时器0
-  44   1              uart_init();             // 初始化串口
-  45   1              week = getWeek(year,month,day);          // 初始化星期
-  46   1              showWeekLed();           // 显示LED
-  47   1              clearSDAT();             // 清空缓冲区
-  48   1              ///////////////////////
-  49   1              while(1)
-  50   1              {       
-  51   2                      updateTimeData();   // 更新时间数据
-  52   2                      modeFlag = checkKey_s1(&keyFlag,modeFlag); // 检测按键 S1
-  53   2                      modeFlag = checkKey_s2(&keyFlag,modeFlag); // 检测按键 S2
-  54   2                      switch(modeFlag){
-  55   3                              case 0: showTime_MS(); break;
-C51 COMPILER V9.01   MAIN                                                                  01/01/2020 14:22:27 PAGE 2   
+  14          unsigned char sdat[64]={0x00};        // 数据缓存区
+  15          unsigned char sendDat[8]={0x00};     // 发送数据缓冲区
+  16          unsigned char sendIndex = 0;         // 发送缓冲区指针
+  17          unsigned char sp=0;   // 数据缓存区指针
+  18          
+  19          unsigned char keyFlag=0;
+  20          unsigned char countSecond = 0; // 用来计数3秒
+  21          unsigned char ledTime = 0;
+  22          
+  23          // 通过中断来更新以下数据
+  24          unsigned char hour=0,minute=0,second=0,month=1,day=21,week = 0;
+  25          unsigned int year=2020; 
+  26          unsigned char T0Num = 0;
+  27          unsigned char modeFlag = 0; // 0：显示分秒 1：显示公元年  2：显示月日
+  28          
+  29          void updateTimeData();
+  30          void showTime_MS();
+  31          void showTime_Year();
+  32          void stayThreeSecond();
+  33          void showTime_MonthDay();
+  34          void showWeekLed();
+  35          unsigned char getWeek(unsigned int tYear,unsigned char tMonth,unsigned char tDay);
+  36          void dealData(unsigned char *dataGo);
+  37          unsigned char getTimeFromData(unsigned char *dataGo);
+  38          void clearSDAT();
+  39          unsigned char judgeLeapOrOrdinaryYear(unsigned int tYear);
+  40          unsigned char getMonthDay(unsigned char tMonth);
+  41          unsigned char getSDATLength(unsigned char *point);
+  42          void analyChar(unsigned char *point,unsigned char length);
+  43          unsigned int getYearFromQuestion(unsigned char *point);
+  44          void sendData(unsigned char *point);
+  45          unsigned char getMonthFromQuestion(unsigned char *point);
+  46          
+  47          int main()
+  48          {
+  49   1              // init，各项功能初始化
+  50   1              timerInit_0();           // 初始化计时器0
+  51   1              uart_init();             // 初始化串口
+  52   1              week = getWeek(year,month,day);          // 初始化星期
+  53   1              showWeekLed();           // 显示LED
+  54   1              clearSDAT();             // 清空缓冲区
+  55   1              ///////////////////////
+C51 COMPILER V9.01   MAIN                                                                  01/02/2020 23:49:21 PAGE 2   
 
-  56   3                              case 1: showTime_Year(); break;
-  57   3                              case 2: showTime_MonthDay(); break;
-  58   3                      }       
-  59   2              }
-  60   1              return 0;
-  61   1      }
-  62          
-  63          // 定时器T0中断函数
-  64          void T0_func(void) interrupt 1
-  65          {
-  66   1              // T0为50ms溢出一次
-  67   1              // 重装计数器
-  68   1              TH0 = 0x3c;                                     //装定时初值高8位
-  69   1              TL0 = 0xb0;                                     //装定时初值低8位
-  70   1              T0Num++;
-  71   1              if(T0Num == 20)
-  72   1              {
-  73   2                      T0Num = 0;
-  74   2                      second++;
-  75   2                      showWeekLed();             // 让LED灯显示并循环
-  76   2              }
-  77   1              stayThreeSecond();             // 三秒计数器    
-  78   1      }
-  79          // 更新时间数据
-  80          void updateTimeData()
-  81          {
-  82   1              if(second >=60)
-  83   1              {
-  84   2                      second = 0;
-  85   2                      minute ++;
-  86   2              }
-  87   1              if(minute >= 60)
-  88   1              {
-  89   2                      minute = 0;
-  90   2                      hour ++;
-  91   2              }
-  92   1              if(hour >= 24)
-  93   1              {
-  94   2                      hour = 0;
-  95   2                      day++;
-  96   2                      week = getWeek(year,month,day);          //更新星期
-  97   2              }
-  98   1              if(day > getMonthDay(month))
-  99   1              {
- 100   2                      day = 1;
- 101   2                      month++;        
- 102   2              }
- 103   1              if(month > 12)
- 104   1              {
- 105   2                      month = 1;
- 106   2                      year++;
- 107   2              }
- 108   1      }
- 109          // 显示分秒的函数
- 110          void showTime_MS()
- 111          {
- 112   1              unsigned char m1,m2,s1,s2;
- 113   1              m2 = minute %10; // 分钟个位
- 114   1              m1 = minute /10; // 分钟十位
- 115   1              s2 = second %10; // 秒个位
- 116   1              s1 = second /10; //     秒十位
- 117   1              showFourNum(m1,m2,s1,s2,1);
-C51 COMPILER V9.01   MAIN                                                                  01/01/2020 14:22:27 PAGE 3   
+  56   1              while(1)
+  57   1              {       
+  58   2                      updateTimeData();   // 更新时间数据
+  59   2                      modeFlag = checkKey_s1(&keyFlag,modeFlag); // 检测按键 S1
+  60   2                      modeFlag = checkKey_s2(&keyFlag,modeFlag); // 检测按键 S2
+  61   2                      switch(modeFlag){
+  62   3                              case 0: showTime_MS(); break;
+  63   3                              case 1: showTime_Year(); break;
+  64   3                              case 2: showTime_MonthDay(); break;
+  65   3                      }       
+  66   2              }
+  67   1              return 0;
+  68   1      }
+  69          
+  70          // 定时器T0中断函数
+  71          void T0_func(void) interrupt 1
+  72          {
+  73   1              // T0为50ms溢出一次
+  74   1              // 重装计数器
+  75   1              TH0 = 0x3c;                                     //装定时初值高8位
+  76   1              TL0 = 0xb0;                                     //装定时初值低8位
+  77   1              T0Num++;
+  78   1              if(T0Num == 20)
+  79   1              {
+  80   2                      T0Num = 0;
+  81   2                      second++;
+  82   2                      showWeekLed();             // 让LED灯显示并循环
+  83   2              }
+  84   1              stayThreeSecond();             // 三秒计数器    
+  85   1      }
+  86          // 更新时间数据
+  87          void updateTimeData()
+  88          {
+  89   1              if(second >=60)
+  90   1              {
+  91   2                      second = 0;
+  92   2                      minute ++;
+  93   2              }
+  94   1              if(minute >= 60)
+  95   1              {
+  96   2                      minute = 0;
+  97   2                      hour ++;
+  98   2              }
+  99   1              if(hour >= 24)
+ 100   1              {
+ 101   2                      hour = 0;
+ 102   2                      day++;
+ 103   2                      week = getWeek(year,month,day);          //更新星期
+ 104   2              }
+ 105   1              if(day > getMonthDay(month))
+ 106   1              {
+ 107   2                      day = 1;
+ 108   2                      month++;        
+ 109   2              }
+ 110   1              if(month > 12)
+ 111   1              {
+ 112   2                      month = 1;
+ 113   2                      year++;
+ 114   2              }
+ 115   1      }
+ 116          // 显示分秒的函数
+ 117          void showTime_MS()
+C51 COMPILER V9.01   MAIN                                                                  01/02/2020 23:49:21 PAGE 3   
 
- 118   1      }
- 119          // 显示公元年
- 120          void showTime_Year()
- 121          {
- 122   1              unsigned char y1,y2,y3,y4;
- 123   1              unsigned int tempYear = year;
- 124   1              y4 = tempYear %10;
- 125   1              tempYear = tempYear/10;
- 126   1              y3 = tempYear %10;
- 127   1              tempYear = tempYear/10;
- 128   1              y2 = tempYear %10;
- 129   1              tempYear = tempYear/10;
- 130   1              y1 = tempYear %10;
- 131   1              showFourNum(y1,y2,y3,y4,0);
- 132   1      }
- 133          // 显示月日
- 134          void showTime_MonthDay()
- 135          {
- 136   1              unsigned char m1,m2,d1,d2;
- 137   1              m2 = month %10;
- 138   1              m1 = month /10;
- 139   1              d2 = day %10;
- 140   1              d1 = day /10;
- 141   1              showFourNum(m1,m2,d1,d2,1);     
- 142   1      }
- 143          // 显示三秒的等待函数
- 144          void stayThreeSecond()
- 145          {
- 146   1              if(keyFlag == 1)
- 147   1              {
- 148   2                      countSecond ++;
- 149   2                      if(countSecond == 60)
- 150   2                      {
- 151   3                              keyFlag = 0;
- 152   3                              modeFlag = 0;
- 153   3                              countSecond = 0;
- 154   3                      }
- 155   2              }
- 156   1      }
- 157          // 计算星期函数
- 158          unsigned char getWeek(unsigned int tYear,unsigned char tMonth,unsigned char tDay)
- 159          {
- 160   1              unsigned char topTwoYear ;              // 年份前两位(默认年份四位数)
- 161   1              unsigned char lastTwoYear ;             // 年份后两位
- 162   1              unsigned char dayGo = tDay;                             // 日
- 163   1              unsigned char monthGo = tMonth;             // 3<=monthGo<=14,即1，2月当作前年的13，14月
- 164   1              unsigned char weekGo;
- 165   1      
- 166   1              if(monthGo<3)
- 167   1              {
- 168   2                      if(monthGo == 1) monthGo = 13;
- 169   2                      else if(monthGo == 2) monthGo = 14;
- 170   2                      tYear --; 
- 171   2              }
- 172   1              topTwoYear = tYear/100;
- 173   1              lastTwoYear = tYear%100;
- 174   1              weekGo = ((topTwoYear/4)-2*topTwoYear+lastTwoYear+(lastTwoYear/4)+((13*(monthGo+1))/5)+dayGo-1)%7;
- 175   1              return weekGo;
- 176   1      }
- 177          // led显示函数和蜂鸣器鸣叫
- 178          void showWeekLed()
- 179          {
-C51 COMPILER V9.01   MAIN                                                                  01/01/2020 14:22:27 PAGE 4   
+ 118          {
+ 119   1              unsigned char m1,m2,s1,s2;
+ 120   1              m2 = minute %10; // 分钟个位
+ 121   1              m1 = minute /10; // 分钟十位
+ 122   1              s2 = second %10; // 秒个位
+ 123   1              s1 = second /10; //     秒十位
+ 124   1              showFourNum(m1,m2,s1,s2,1);
+ 125   1      }
+ 126          // 显示公元年
+ 127          void showTime_Year()
+ 128          {
+ 129   1              unsigned char y1,y2,y3,y4;
+ 130   1              unsigned int tempYear = year;
+ 131   1              y4 = tempYear %10;
+ 132   1              tempYear = tempYear/10;
+ 133   1              y3 = tempYear %10;
+ 134   1              tempYear = tempYear/10;
+ 135   1              y2 = tempYear %10;
+ 136   1              tempYear = tempYear/10;
+ 137   1              y1 = tempYear %10;
+ 138   1              showFourNum(y1,y2,y3,y4,0);
+ 139   1      }
+ 140          // 显示月日
+ 141          void showTime_MonthDay()
+ 142          {
+ 143   1              unsigned char m1,m2,d1,d2;
+ 144   1              m2 = month %10;
+ 145   1              m1 = month /10;
+ 146   1              d2 = day %10;
+ 147   1              d1 = day /10;
+ 148   1              showFourNum(m1,m2,d1,d2,1);     
+ 149   1      }
+ 150          // 显示三秒的等待函数
+ 151          void stayThreeSecond()
+ 152          {
+ 153   1              if(keyFlag == 1)
+ 154   1              {
+ 155   2                      countSecond ++;
+ 156   2                      if(countSecond == 60)
+ 157   2                      {
+ 158   3                              keyFlag = 0;
+ 159   3                              modeFlag = 0;
+ 160   3                              countSecond = 0;
+ 161   3                      }
+ 162   2              }
+ 163   1      }
+ 164          // 计算星期函数
+ 165          unsigned char getWeek(unsigned int tYear,unsigned char tMonth,unsigned char tDay)
+ 166          {
+ 167   1              unsigned char topTwoYear ;              // 年份前两位(默认年份四位数)
+ 168   1              unsigned char lastTwoYear ;             // 年份后两位
+ 169   1              unsigned char dayGo = tDay;                             // 日
+ 170   1              unsigned char monthGo = tMonth;             // 3<=monthGo<=14,即1，2月当作前年的13，14月
+ 171   1              unsigned char weekGo;
+ 172   1      
+ 173   1              if(monthGo<3)
+ 174   1              {
+ 175   2                      if(monthGo == 1) monthGo = 13;
+ 176   2                      else if(monthGo == 2) monthGo = 14;
+ 177   2                      tYear --; 
+ 178   2              }
+ 179   1              topTwoYear = tYear/100;
+C51 COMPILER V9.01   MAIN                                                                  01/02/2020 23:49:21 PAGE 4   
 
- 180   1              if(week !=0)
- 181   1              {
- 182   2                      week = getWeek(year,month,day);
- 183   2                      showLed(week,ledTime%8);
- 184   2                      ledTime++;      
- 185   2              }
- 186   1              else
- 187   1              {
- 188   2                      clearAllLed();
- 189   2                      buzzer_reverse();       // 太吵了暂时注释
- 190   2              }
- 191   1      }
- 192          
- 193          // 串口中断函数
- 194          void uart_func(void) interrupt 4
- 195          {
- 196   1              // 接收数据
- 197   1              if(RI)
- 198   1              {
- 199   2                      // 一个数字或者英文字符 占用 一个字节
- 200   2                      // 一个汉字占用     两个字节
- 201   2                      RI = 0;
- 202   2                      getData = SBUF;
- 203   2                      sdat[sp] = getData;
- 204   2                      sp++;
- 205   2                      if(sp>=32) sp = 0;
- 206   2                      if(getData == 0x0A)
- 207   2                      {
- 208   3                              // 0x0A为结束标志位
- 209   3                              // TODO: 进行数据处理，赋值为对应的变量
- 210   3                              ES = 0;
- 211   3                              dealData(sdat);
- 212   3                              // TODO: 清空sdat缓冲区，sp清零
- 213   3                              clearSDAT();
- 214   3                              sp = 0;
- 215   3                              ES = 1;
- 216   3                      }
- 217   2                      //SBUF = getData;
- 218   2                      //test
- 219   2              }
- 220   1              if(TI)
- 221   1              {
- 222   2                      TI =0;
- 223   2              }
- 224   1      }
- 225          // 处理接收来的数据
- 226          void dealData(unsigned char *dataGo)
- 227          {
- 228   1              unsigned char timeFlag = 0;  // 处理时间的标志位，0：年，1：月，2：日，以此类推
- 229   1              unsigned char temp=0,i;
- 230   1              // 将原时间数据都清零
- 231   1              year = 0,month = 0,day = 0,hour = 0,minute = 0,second = 0;
- 232   1      
- 233   1              while(*dataGo != 0x0D)
- 234   1              {
- 235   2                      // 处理日期数据
- 236   2                      if(*dataGo == 0x2F || *dataGo == 0x3A ||*dataGo == 0x2D) // 因为斜杆和冒号的十六进制为 0x2f和0x3a
- 237   2                      {
- 238   3                              timeFlag++;     
- 239   3                              dataGo++;
- 240   3                      }
- 241   2                      switch(timeFlag){
-C51 COMPILER V9.01   MAIN                                                                  01/01/2020 14:22:27 PAGE 5   
+ 180   1              lastTwoYear = tYear%100;
+ 181   1              weekGo = ((topTwoYear/4)-2*topTwoYear+lastTwoYear+(lastTwoYear/4)+((13*(monthGo+1))/5)+dayGo-1)%7;
+ 182   1              return weekGo;
+ 183   1      }
+ 184          // led显示函数和蜂鸣器鸣叫
+ 185          void showWeekLed()
+ 186          {
+ 187   1              if(week !=0)
+ 188   1              {
+ 189   2                      week = getWeek(year,month,day);
+ 190   2                      showLed(week,ledTime%8);
+ 191   2                      ledTime++;      
+ 192   2              }
+ 193   1              else
+ 194   1              {
+ 195   2                      clearAllLed();
+ 196   2                      buzzer_reverse();       // 太吵了暂时注释
+ 197   2              }
+ 198   1      }
+ 199          
+ 200          // 串口中断函数
+ 201          void uart_func(void) interrupt 4
+ 202          {
+ 203   1              unsigned char length;
+ 204   1              // 接收数据
+ 205   1              if(RI)
+ 206   1              {
+ 207   2                      // 一个数字或者英文字符 占用 一个字节
+ 208   2                      // 一个汉字占用     两个字节
+ 209   2                      RI = 0;
+ 210   2                      getData = SBUF;
+ 211   2                      sdat[sp] = getData;
+ 212   2                      sp++;
+ 213   2                      if(sp>=32) sp = 0;
+ 214   2                      if(getData == 0x0A)
+ 215   2                      {
+ 216   3                              // 0x0A为结束标志位
+ 217   3                              // 通过判断数组中有效长度来判断是校准还是答题模式
+ 218   3                              length = getSDATLength(sdat);
+ 219   3                              if(length == 19)
+ 220   3                              {
+ 221   4                                      // 进行数据处理，赋值为对应的变量
+ 222   4                                      dealData(sdat); 
+ 223   4                              }  
+ 224   3                              else
+ 225   3                              {
+ 226   4                                      // 进行字符分析，给出答案
+ 227   4                                      analyChar(sdat,length);
+ 228   4                                      sendData(sendDat);      
+ 229   4                              } 
+ 230   3                              // 清空sdat缓冲区，sp清零
+ 231   3                              clearSDAT();
+ 232   3                              sp = 0;
+ 233   3                      }
+ 234   2                      //SBUF = getData;
+ 235   2                      //test
+ 236   2              }
+ 237   1              if(TI)
+ 238   1              {
+ 239   2                      TI =0;
+ 240   2              }
+ 241   1      }
+C51 COMPILER V9.01   MAIN                                                                  01/02/2020 23:49:21 PAGE 5   
 
- 242   3                              case 0:
- 243   3                                      for(i=0;i<4;i++)
- 244   3                                      {
- 245   4                                              temp = *dataGo - 0x30;
- 246   4                                              year *= 10;
- 247   4                                              year += temp;
- 248   4                                              dataGo++; 
- 249   4                                      }
- 250   3                                      break;
- 251   3                              case 1:
- 252   3                                      month = getTimeFromData(dataGo); // 因为参数只是传值，不会改变真正的datago地址
- 253   3                                      dataGo += 2;                                     // 所以我们要在函数外面再自增 2 才行
- 254   3                                      break;
- 255   3                              case 2:
- 256   3                                      day = getTimeFromData(dataGo);
- 257   3                                      dataGo += 2;
- 258   3                                      break;
- 259   3                              case 3:
- 260   3                                      hour = getTimeFromData(dataGo);
- 261   3                                      dataGo += 2;
- 262   3                                      break;
- 263   3                              case 4:
- 264   3                                      minute = getTimeFromData(dataGo);
- 265   3                                      dataGo += 2;
- 266   3                                      break;
- 267   3                              case 5:
- 268   3                                      second = getTimeFromData(dataGo);
- 269   3                                      dataGo += 2;
- 270   3                                      break;
- 271   3                      }       
- 272   2              }                               
- 273   1      }
- 274          // 计算月日时分秒的函数
- 275          unsigned char getTimeFromData(unsigned char *point)
- 276          {
- 277   1              unsigned char temp=0,i;
- 278   1              unsigned char returnValue=0;
- 279   1              for(i=0;i<2;i++)
- 280   1              {
- 281   2                      temp = *point - 0x30;
- 282   2                      returnValue *= 10;
- 283   2                      returnValue += temp;
- 284   2                      point++;
- 285   2              }
- 286   1              return returnValue; 
- 287   1      }
- 288          // 清空缓冲区
- 289          void clearSDAT()
- 290          {
- 291   1              unsigned char i;
- 292   1              for(i=0;i<32;i++)
- 293   1              {
- 294   2                      sdat[i] = 0x00;
- 295   2              }
- 296   1      }
- 297          // 判断平润年
- 298          unsigned char judgeLeapOrOrdinaryYear(unsigned int tYear)
- 299          {
- 300   1              unsigned int tempYear = tYear;
- 301   1              if((tempYear%4 == 0 && tempYear%100 !=0)||(tempYear%100 == 0 && tempYear%400==0))
- 302   1              {
- 303   2                      return 1;       
-C51 COMPILER V9.01   MAIN                                                                  01/01/2020 14:22:27 PAGE 6   
+ 242          // 处理接收来的数据
+ 243          void dealData(unsigned char *dataGo)
+ 244          {
+ 245   1              unsigned char timeFlag = 0;  // 处理时间的标志位，0：年，1：月，2：日，以此类推
+ 246   1              unsigned char temp=0,i;
+ 247   1              // 将原时间数据都清零
+ 248   1              year = 0,month = 0,day = 0,hour = 0,minute = 0,second = 0;
+ 249   1      
+ 250   1              while(*dataGo != 0x0D)
+ 251   1              {
+ 252   2                      // 处理日期数据
+ 253   2                      if(*dataGo == 0x2F || *dataGo == 0x3A ||*dataGo == 0x2D) // 因为斜杆和冒号的十六进制为 0x2f和0x3a
+ 254   2                      {
+ 255   3                              timeFlag++;     
+ 256   3                              dataGo++;
+ 257   3                      }
+ 258   2                      switch(timeFlag){
+ 259   3                              case 0:
+ 260   3                                      for(i=0;i<4;i++)
+ 261   3                                      {
+ 262   4                                              temp = *dataGo - 0x30;
+ 263   4                                              year *= 10;
+ 264   4                                              year += temp;
+ 265   4                                              dataGo++; 
+ 266   4                                      }
+ 267   3                                      break;
+ 268   3                              case 1:
+ 269   3                                      month = getTimeFromData(dataGo); // 因为参数只是传值，不会改变真正的datago地址
+ 270   3                                      dataGo += 2;                                     // 所以我们要在函数外面再自增 2 才行
+ 271   3                                      break;
+ 272   3                              case 2:
+ 273   3                                      day = getTimeFromData(dataGo);
+ 274   3                                      dataGo += 2;
+ 275   3                                      break;
+ 276   3                              case 3:
+ 277   3                                      hour = getTimeFromData(dataGo);
+ 278   3                                      dataGo += 2;
+ 279   3                                      break;
+ 280   3                              case 4:
+ 281   3                                      minute = getTimeFromData(dataGo);
+ 282   3                                      dataGo += 2;
+ 283   3                                      break;
+ 284   3                              case 5:
+ 285   3                                      second = getTimeFromData(dataGo);
+ 286   3                                      dataGo += 2;
+ 287   3                                      break;
+ 288   3                      }       
+ 289   2              }                               
+ 290   1      }
+ 291          // 计算月日时分秒的函数
+ 292          unsigned char getTimeFromData(unsigned char *point)
+ 293          {
+ 294   1              unsigned char temp=0,i;
+ 295   1              unsigned char returnValue=0;
+ 296   1              for(i=0;i<2;i++)
+ 297   1              {
+ 298   2                      temp = *point - 0x30;
+ 299   2                      returnValue *= 10;
+ 300   2                      returnValue += temp;
+ 301   2                      point++;
+ 302   2              }
+ 303   1              return returnValue; 
+C51 COMPILER V9.01   MAIN                                                                  01/02/2020 23:49:21 PAGE 6   
 
- 304   2              }
- 305   1              return 0;
- 306   1      }
- 307          // 得到相应月份有几天
- 308          unsigned char getMonthDay(unsigned char tMonth)
- 309          {
- 310   1              if(tMonth == 2)
- 311   1              {
- 312   2                      if(judgeLeapOrOrdinaryYear(tMonth))
- 313   2                      {
- 314   3                              return 29;
- 315   3                      }
- 316   2              }
- 317   1              return monthDay[tMonth-1];              
- 318   1      }
+ 304   1      }
+ 305          // 清空缓冲区
+ 306          void clearSDAT()
+ 307          {
+ 308   1              unsigned char i;
+ 309   1              for(i=0;i<64;i++)
+ 310   1              {
+ 311   2                      sdat[i] = 0x00;
+ 312   2              }
+ 313   1      }
+ 314          // 判断平润年
+ 315          unsigned char judgeLeapOrOrdinaryYear(unsigned int tYear)
+ 316          {
+ 317   1              unsigned int tempYear = tYear;
+ 318   1              if((tempYear%4 == 0 && tempYear%100 !=0)||(tempYear%100 == 0 && tempYear%400==0))
+ 319   1              {
+ 320   2                      return 1;       
+ 321   2              }
+ 322   1              return 0;
+ 323   1      }
+ 324          // 得到相应月份有几天
+ 325          unsigned char getMonthDay(unsigned char tMonth)
+ 326          {
+ 327   1              if(tMonth == 2)
+ 328   1              {
+ 329   2                      if(judgeLeapOrOrdinaryYear(tMonth))
+ 330   2                      {
+ 331   3                              return 29;
+ 332   3                      }
+ 333   2              }
+ 334   1              return monthDay[tMonth-1];              
+ 335   1      }
+ 336          // 获得SDAT中有效数据长度
+ 337          unsigned char getSDATLength(unsigned char *point)
+ 338          {
+ 339   1              unsigned char i=0;
+ 340   1              for(i=0;*point != 0x0D;)
+ 341   1              {
+ 342   2                      i++;
+ 343   2                      point++;        
+ 344   2              }
+ 345   1              return i;
+ 346   1      }
+ 347          // 字符分析
+ 348          void analyChar(unsigned char *point,unsigned char length)
+ 349          {
+ 350   1              unsigned int tempYear=0;
+ 351   1              unsigned char tempMonth=0,tempDay=0,tempWeek=0;
+ 352   1      
+ 353   1              tempYear = getYearFromQuestion(point); // 获得年份
+ 354   1              if(length == 16)
+ 355   1              {
+ 356   2                      // 回答是否为闰年
+ 357   2                      if(judgeLeapOrOrdinaryYear(tempYear))
+ 358   2                      {
+ 359   3                              sendDat[0] = 0xCA;
+ 360   3                              sendDat[1] = 0xC7;
+ 361   3                      }
+ 362   2                      else
+ 363   2                      {
+ 364   3                              sendDat[0] = 0xB7;
+ 365   3                              sendDat[1] = 0xF1;
+C51 COMPILER V9.01   MAIN                                                                  01/02/2020 23:49:21 PAGE 7   
+
+ 366   3                      }
+ 367   2                      sendDat[2] = 0x3A; // 0x3A为结束标志位
+ 368   2              }
+ 369   1              else if(length == 24)
+ 370   1              {
+ 371   2                      // 回答是星期几
+ 372   2                      tempMonth = getTimeFromData(&point[6]); // 获得月份
+ 373   2                      tempDay = getTimeFromData(&point[10]); // 获得日
+ 374   2                      tempWeek = getWeek(tempYear,tempMonth,tempDay);
+ 375   2                      sendDat[0] = tempWeek + 0x30;
+ 376   2                      sendDat[1] = 0x3A;              
+ 377   2              }
+ 378   1              else if(length == 22)
+ 379   1              {
+ 380   2                      // 该问题少一个问号，为回答有几个工作日
+ 381   2                      
+ 382   2                      
+ 383   2              }       
+ 384   1      }
+ 385          // 从问题中获得年份
+ 386          unsigned int getYearFromQuestion(unsigned char *point)
+ 387          {
+ 388   1              // 因为年份就是前4位
+ 389   1              unsigned char i=0,temp=0;
+ 390   1              unsigned int yearGo=0;
+ 391   1              while(i<4)
+ 392   1              {
+ 393   2                      temp = *point - 0x30;
+ 394   2                      yearGo *= 10;
+ 395   2                      yearGo += temp;
+ 396   2                      i++;
+ 397   2                      point++;                        
+ 398   2              }
+ 399   1              return yearGo;  
+ 400   1      }
+ 401          // 发送发送缓冲区的内容
+ 402          void sendData(unsigned char *point)
+ 403          {
+ 404   1              unsigned char i;
+ 405   1              unsigned char *temp;
+ 406   1              // 因为发送缓冲区的数据是以 0x3A 来作为截止
+ 407   1              while(*point != 0x3A)
+ 408   1              {
+ 409   2                      SBUF = *point;
+ 410   2                      while(!TI);   // 当正在发送的时候等待 ,TI == 1 表示发送完成
+ 411   2                      point++;
+ 412   2              }
+ 413   1              // 清除发送缓冲区
+ 414   1              for(i=0;i<8;i++)
+ 415   1              {
+ 416   2                      temp[i] = 0x00;
+ 417   2              }               
+ 418   1      }
+ 419          
+ 420          
 *** WARNING C290 IN LINE 16 OF MAIN.C: missing return value
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1374    ----
+   CODE SIZE        =   2072    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =    132      43
+C51 COMPILER V9.01   MAIN                                                                  01/02/2020 23:49:21 PAGE 8   
+
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     91      26
+   DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

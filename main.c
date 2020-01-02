@@ -6,12 +6,14 @@
 #include "key.h"
 #include "led.h"
 #include "uart.h"
-
+// 注意事项，使用串口时一定要勾选 “发送新行” 否则出错；设置闹钟要将 “请于” 删除，直接以年份开头
 unsigned int test=0;
 
 unsigned char monthDay[] = {31,28,31,30,31,30,31,31,30,31,30,31}; // 二月暂时按平年算
 unsigned char getData;
-unsigned char sdat[32]={0x00}; // 数据缓存区
+unsigned char sdat[64]={0x00};        // 数据缓存区
+unsigned char sendDat[8]={0x00};     // 发送数据缓冲区
+unsigned char sendIndex = 0;         // 发送缓冲区指针
 unsigned char sp=0;   // 数据缓存区指针
 
 unsigned char keyFlag=0;
@@ -36,6 +38,11 @@ unsigned char getTimeFromData(unsigned char *dataGo);
 void clearSDAT();
 unsigned char judgeLeapOrOrdinaryYear(unsigned int tYear);
 unsigned char getMonthDay(unsigned char tMonth);
+unsigned char getSDATLength(unsigned char *point);
+void analyChar(unsigned char *point,unsigned char length);
+unsigned int getYearFromQuestion(unsigned char *point);
+void sendData(unsigned char *point);
+unsigned char getMonthFromQuestion(unsigned char *point);
 
 int main()
 {
@@ -193,6 +200,7 @@ void showWeekLed()
 // 串口中断函数
 void uart_func(void) interrupt 4
 {
+	unsigned char length;
 	// 接收数据
 	if(RI)
 	{
@@ -206,13 +214,22 @@ void uart_func(void) interrupt 4
 		if(getData == 0x0A)
 		{
 			// 0x0A为结束标志位
-			// TODO: 进行数据处理，赋值为对应的变量
-			ES = 0;
-			dealData(sdat);
-			// TODO: 清空sdat缓冲区，sp清零
+			// 通过判断数组中有效长度来判断是校准还是答题模式
+			length = getSDATLength(sdat);
+			if(length == 19)
+			{
+				// 进行数据处理，赋值为对应的变量
+				dealData(sdat);	
+			}  
+			else
+			{
+				// 进行字符分析，给出答案
+				analyChar(sdat,length);
+				sendData(sendDat);	
+			} 
+			// 清空sdat缓冲区，sp清零
 			clearSDAT();
 			sp = 0;
-			ES = 1;
 		}
 		//SBUF = getData;
 		//test
@@ -289,7 +306,7 @@ unsigned char getTimeFromData(unsigned char *point)
 void clearSDAT()
 {
 	unsigned char i;
-	for(i=0;i<32;i++)
+	for(i=0;i<64;i++)
 	{
 		sdat[i] = 0x00;
 	}
@@ -316,3 +333,88 @@ unsigned char getMonthDay(unsigned char tMonth)
 	}
 	return monthDay[tMonth-1];		
 }
+// 获得SDAT中有效数据长度
+unsigned char getSDATLength(unsigned char *point)
+{
+	unsigned char i=0;
+	for(i=0;*point != 0x0D;)
+	{
+		i++;
+		point++;	
+	}
+	return i;
+}
+// 字符分析
+void analyChar(unsigned char *point,unsigned char length)
+{
+	unsigned int tempYear=0;
+	unsigned char tempMonth=0,tempDay=0,tempWeek=0;
+
+	tempYear = getYearFromQuestion(point); // 获得年份
+	if(length == 16)
+	{
+		// 回答是否为闰年
+		if(judgeLeapOrOrdinaryYear(tempYear))
+		{
+			sendDat[0] = 0xCA;
+			sendDat[1] = 0xC7;
+		}
+		else
+		{
+			sendDat[0] = 0xB7;
+			sendDat[1] = 0xF1;
+		}
+		sendDat[2] = 0x3A; // 0x3A为结束标志位
+	}
+	else if(length == 24)
+	{
+		// 回答是星期几
+		tempMonth = getTimeFromData(&point[6]); // 获得月份
+		tempDay = getTimeFromData(&point[10]); // 获得日
+		tempWeek = getWeek(tempYear,tempMonth,tempDay);
+		sendDat[0] = tempWeek + 0x30;
+		sendDat[1] = 0x3A;		
+	}
+	else if(length == 22)
+	{
+		// 该问题少一个问号，为回答有几个工作日
+		
+		
+	}	
+}
+// 从问题中获得年份
+unsigned int getYearFromQuestion(unsigned char *point)
+{
+	// 因为年份就是前4位
+	unsigned char i=0,temp=0;
+	unsigned int yearGo=0;
+	while(i<4)
+	{
+		temp = *point - 0x30;
+		yearGo *= 10;
+		yearGo += temp;
+		i++;
+		point++;			
+	}
+	return yearGo;	
+}
+// 发送发送缓冲区的内容
+void sendData(unsigned char *point)
+{
+	unsigned char i;
+	unsigned char *temp;
+	// 因为发送缓冲区的数据是以 0x3A 来作为截止
+	while(*point != 0x3A)
+	{
+		SBUF = *point;
+		while(!TI);   // 当正在发送的时候等待 ,TI == 1 表示发送完成
+		point++;
+	}
+	// 清除发送缓冲区
+	for(i=0;i<8;i++)
+	{
+		temp[i] = 0x00;
+	}		
+}
+
+
