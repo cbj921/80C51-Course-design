@@ -37,12 +37,13 @@ void dealData(unsigned char *dataGo);
 unsigned char getTimeFromData(unsigned char *dataGo);
 void clearSDAT();
 unsigned char judgeLeapOrOrdinaryYear(unsigned int tYear);
-unsigned char getMonthDay(unsigned char tMonth);
+unsigned char getMonthDay(unsigned char tYear,unsigned char tMonth);
 unsigned char getSDATLength(unsigned char *point);
 void analyChar(unsigned char *point,unsigned char length);
 unsigned int getYearFromQuestion(unsigned char *point);
 void sendData(unsigned char *point);
 unsigned char getMonthFromQuestion(unsigned char *point);
+unsigned char getWorkDayFromMonth(unsigned int yearGo,unsigned char monthGo);
 
 int main()
 {
@@ -102,7 +103,7 @@ void updateTimeData()
 		day++;
 		week = getWeek(year,month,day);          //更新星期
 	}
-	if(day > getMonthDay(month))
+	if(day > getMonthDay(year,month))
 	{
 		day = 1;
 		month++;	
@@ -322,11 +323,11 @@ unsigned char judgeLeapOrOrdinaryYear(unsigned int tYear)
 	return 0;
 }
 // 得到相应月份有几天
-unsigned char getMonthDay(unsigned char tMonth)
+unsigned char getMonthDay(unsigned char tYear,unsigned char tMonth)
 {
 	if(tMonth == 2)
 	{
-		if(judgeLeapOrOrdinaryYear(tMonth))
+		if(judgeLeapOrOrdinaryYear(tYear))
 		{
 			return 29;
 		}
@@ -373,13 +374,16 @@ void analyChar(unsigned char *point,unsigned char length)
 		tempDay = getTimeFromData(&point[10]); // 获得日
 		tempWeek = getWeek(tempYear,tempMonth,tempDay);
 		sendDat[0] = tempWeek + 0x30;
-		sendDat[1] = 0x3A;		
+		sendDat[1] = 0x3A; // 0x3A为结束标志位		
 	}
 	else if(length == 22)
 	{
 		// 该问题少一个问号，为回答有几个工作日
-		
-		
+		tempMonth = getTimeFromData(&point[6]); // 获得月份
+		tempDay	  = getWorkDayFromMonth(tempYear,tempMonth); // 这里用tempDay作为工作日的变量
+		sendDat[0] = (tempDay /10) +0x30;
+		sendDat[1] = (tempDay %10) +0x30;
+		sendDat[2] = 0x3A;  // 0x3A为结束标志位	
 	}	
 }
 // 从问题中获得年份
@@ -415,6 +419,30 @@ void sendData(unsigned char *point)
 	{
 		temp[i] = 0x00;
 	}		
+}
+// 从月份中获得工作日有几天
+unsigned char getWorkDayFromMonth(unsigned int yearGo,unsigned char monthGo)
+{
+	// 注意年份都应该用 int 型，否则会溢出
+	unsigned char tempWeek=0,tempDay=0;
+	char workDay = 0;
+	// 先获取该月的 1日是星期几
+	tempWeek = getWeek(yearGo,monthGo,1);
+	if(tempWeek == 0) tempWeek = 7;
+	// 再获取该月一共有几天
+	tempDay =  getMonthDay(yearGo,monthGo);
+	// 计算工作日
+	workDay += (6-tempWeek);
+	if(workDay == -1) workDay = 0;
+	// 计算剩余的天数
+	tempDay -= (8 - tempWeek);
+	// 计算剩余天数中的工作日
+	workDay += (tempDay/7)*5; 
+	tempDay = tempDay %7;
+	if(tempDay >5) tempDay = 5;
+	workDay += tempDay;
+
+	return workDay;
 }
 
 
