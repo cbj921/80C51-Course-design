@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 14:43:46 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
              -gned char minuteGo);
   53          void checkAlarmTime();
   54          void sendAllSDAT();
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 14:43:46 PAGE 2   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 2   
 
   55          
   56          int main()
@@ -79,7 +79,7 @@ line level    source
   67   2                      updateTimeData();   // 更新时间数据
   68   2                      modeFlag = checkKey_s1(&keyFlag,modeFlag); // 检测按键 S1
   69   2                      modeFlag = checkKey_s2(&keyFlag,modeFlag); // 检测按键 S2
-  70   2                      closeBuzzer_s3(&buzzerKeyFlag);                    // 检测按键 S3，若按下，则关闭蜂鸣器
+  70   2                      closeBuzzer_s3(&buzzerKeyFlag,&alarmFlag);                         // 检测按键 S3，若按下，则关闭蜂鸣器
   71   2                      switch(modeFlag){
   72   3                              case 0: showTime_MS(); break;
   73   3                              case 1: showTime_Year(); break;
@@ -126,7 +126,7 @@ line level    source
  114   1              {
  115   2                      hour = 0;
  116   2                      day++;
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 14:43:46 PAGE 3   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 3   
 
  117   2                      week = getWeek(year,month,day);          //更新星期
  118   2              }
@@ -190,7 +190,7 @@ line level    source
  176   2              }
  177   1      }
  178          // 计算星期函数
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 14:43:46 PAGE 4   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 4   
 
  179          unsigned char getWeek(unsigned int tYear,unsigned char tMonth,unsigned char tDay)
  180          {
@@ -254,7 +254,7 @@ line level    source
  238   3                              else
  239   3                              {
  240   4                                      // 进行字符分析，给出答案
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 14:43:46 PAGE 5   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 5   
 
  241   4                                      analyChar(sdat,length);
  242   4                                      sendData(sendDat);      
@@ -318,7 +318,7 @@ line level    source
  300   3                              case 5:
  301   3                                      second = getTimeFromData(dataGo);
  302   3                                      dataGo += 2;
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 14:43:46 PAGE 6   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 6   
 
  303   3                                      break;
  304   3                      }       
@@ -382,7 +382,7 @@ line level    source
  362   1      }
  363          // 字符分析
  364          void analyChar(unsigned char *point,unsigned char length)
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 14:43:46 PAGE 7   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 7   
 
  365          {
  366   1              unsigned int tempYear=0;
@@ -446,7 +446,7 @@ line level    source
  424          {
  425   1              // 因为年份就是前4位
  426   1              unsigned char i=0,temp=0;
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 14:43:46 PAGE 8   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 8   
 
  427   1              unsigned int yearGo=0;
  428   1              while(i<4)
@@ -510,7 +510,7 @@ line level    source
  485   1              alarmMonth = monthGo;
  486   1              alarmDay = dayGo;
  487   1              alarmHour = hourGo;
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 14:43:46 PAGE 9   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 9   
 
  488   1              alarmMinute = minuteGo;
  489   1              alarmFlag = 1; // 开启闹钟
@@ -561,9 +561,9 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   2679    ----
+   CODE SIZE        =   2751    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =    146      59
+   XDATA SIZE       =    146      65
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

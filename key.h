@@ -34,8 +34,8 @@ unsigned char checkKey_s2(unsigned char *keyFlag,unsigned char modeFlag)
 	}
 	return modeFlag;
 }
-
-void closeBuzzer_s3(unsigned char *keyFlag)
+// ÄÖÖÓµÄ·äÃùÆ÷¹Ø±Õ
+void closeBuzzer_s3(unsigned char *keyFlag,unsigned char *alarmFlag)
 {
 	if(s3 == 0 && *keyFlag == 0)
 	{
@@ -43,6 +43,7 @@ void closeBuzzer_s3(unsigned char *keyFlag)
 		if(s3 == 0)
 		{
 			*keyFlag = 1;
+			*alarmFlag = 0;
 			buzzer_close();
 		}
 	}

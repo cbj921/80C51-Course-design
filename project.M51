@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        01/05/2020  14:43:47  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        01/05/2020  18:36:28  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -54,38 +54,38 @@ LINK MAP OF MODULE:  project (MAIN)
             CODE    0626H     007EH     UNIT         ?PR?UPDATETIMEDATA?MAIN
             CODE    06A4H     0074H     UNIT         ?PR?SHOWTIME_YEAR?MAIN
             CODE    0718H     0072H     UNIT         ?PR?_GETWORKDAYFROMMONTH?MAIN
-            CODE    078AH     005CH     UNIT         ?PR?_GETYEARFROMQUESTION?MAIN
-            CODE    07E6H     0057H     UNIT         ?PR?MAIN?MAIN
-            CODE    083DH     0056H     UNIT         ?PR?T0_FUNC?MAIN
-            CODE    0893H     0056H     UNIT         ?PR?_SENDDATA?MAIN
-            CODE    08E9H     0053H     UNIT         ?PR?_SHOWSIXNUM?MAIN
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 2
+            CODE    078AH     0064H     UNIT         ?PR?MAIN?MAIN
+            CODE    07EEH     0062H     UNIT         ?PR?_CLOSEBUZZER_S3?MAIN
+            CODE    0850H     005CH     UNIT         ?PR?_GETYEARFROMQUESTION?MAIN
+            CODE    08ACH     0056H     UNIT         ?PR?T0_FUNC?MAIN
+            CODE    0902H     0056H     UNIT         ?PR?_SENDDATA?MAIN
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 2
 
 
-            CODE    093CH     0050H     UNIT         ?PR?CHECKALARMTIME?MAIN
-            CODE    098CH     004BH     UNIT         ?PR?_SETALARMCLOCK?MAIN
-            CODE    09D7H     0047H     UNIT         ?PR?_GETTIMEFROMDATA?MAIN
-            CODE    0A1EH     0045H     UNIT         ?PR?_SHOWFOURNUM?MAIN
-            CODE    0A63H     0037H     UNIT         ?PR?_JUDGELEAPORORDINARYYEAR?MAIN
-            CODE    0A9AH     0030H     UNIT         ?PR?SHOWTIME_MS?MAIN
-            CODE    0ACAH     0030H     UNIT         ?PR?SHOWTIME_MONTHDAY?MAIN
-            CODE    0AFAH     002EH     UNIT         ?PR?_DELAY_MS?MAIN
-            CODE    0B28H     002CH     UNIT         ?PR?_DISPLAY?MAIN
-            CODE    0B54H     0027H     UNIT         ?PR?_CLOSEBUZZER_S3?MAIN
-            CODE    0B7BH     0026H     UNIT         ?PR?SHOWWEEKLED?MAIN
-            CODE    0BA1H     0024H     UNIT         ?PR?_CHECKKEY_S2?MAIN
-            CODE    0BC5H     0023H     UNIT         ?PR?_CHECKKEY_S1?MAIN
-            CODE    0BE8H     001FH     UNIT         ?PR?STAYTHREESECOND?MAIN
-            CODE    0C07H     001EH     UNIT         ?PR?_DATA_RL?MAIN
-            CODE    0C25H     001EH     UNIT         ?PR?_GETMONTHDAY?MAIN
-            CODE    0C43H     001AH     UNIT         ?PR?_SHOWLED?MAIN
-            CODE    0C5DH     001AH     UNIT         ?PR?SENDALLSDAT?MAIN
-            CODE    0C77H     0013H     UNIT         ?PR?UART_INIT?MAIN
-            CODE    0C8AH     0011H     UNIT         ?PR?_DELAY_US?MAIN
-            CODE    0C9BH     0010H     UNIT         ?PR?TIMERINIT_0?MAIN
-            CODE    0CABH     000BH     UNIT         ?PR?CLEARSDAT?MAIN
-            CODE    0CB6H     0003H     UNIT         ?PR?BUZZER_CLOSE?MAIN
-            CODE    0CB9H     0003H     UNIT         ?PR?BUZZER_REVERSE?MAIN
+            CODE    0958H     0053H     UNIT         ?PR?_SHOWSIXNUM?MAIN
+            CODE    09ABH     0050H     UNIT         ?PR?CHECKALARMTIME?MAIN
+            CODE    09FBH     004BH     UNIT         ?PR?_SETALARMCLOCK?MAIN
+            CODE    0A46H     0047H     UNIT         ?PR?_GETTIMEFROMDATA?MAIN
+            CODE    0A8DH     0045H     UNIT         ?PR?_SHOWFOURNUM?MAIN
+            CODE    0AD2H     0037H     UNIT         ?PR?_JUDGELEAPORORDINARYYEAR?MAIN
+            CODE    0B09H     0030H     UNIT         ?PR?SHOWTIME_MS?MAIN
+            CODE    0B39H     0030H     UNIT         ?PR?SHOWTIME_MONTHDAY?MAIN
+            CODE    0B69H     002EH     UNIT         ?PR?_DELAY_MS?MAIN
+            CODE    0B97H     002CH     UNIT         ?PR?_DISPLAY?MAIN
+            CODE    0BC3H     0026H     UNIT         ?PR?SHOWWEEKLED?MAIN
+            CODE    0BE9H     0024H     UNIT         ?PR?_CHECKKEY_S2?MAIN
+            CODE    0C0DH     0023H     UNIT         ?PR?_CHECKKEY_S1?MAIN
+            CODE    0C30H     001FH     UNIT         ?PR?STAYTHREESECOND?MAIN
+            CODE    0C4FH     001EH     UNIT         ?PR?_DATA_RL?MAIN
+            CODE    0C6DH     001EH     UNIT         ?PR?_GETMONTHDAY?MAIN
+            CODE    0C8BH     001AH     UNIT         ?PR?_SHOWLED?MAIN
+            CODE    0CA5H     001AH     UNIT         ?PR?SENDALLSDAT?MAIN
+            CODE    0CBFH     0013H     UNIT         ?PR?UART_INIT?MAIN
+            CODE    0CD2H     0011H     UNIT         ?PR?_DELAY_US?MAIN
+            CODE    0CE3H     0010H     UNIT         ?PR?TIMERINIT_0?MAIN
+            CODE    0CF3H     000BH     UNIT         ?PR?CLEARSDAT?MAIN
+            CODE    0CFEH     0003H     UNIT         ?PR?BUZZER_CLOSE?MAIN
+            CODE    0D01H     0003H     UNIT         ?PR?BUZZER_REVERSE?MAIN
 
 
 
@@ -119,7 +119,7 @@ SEGMENT                                     XDATA_GROUP
   +--> ?PR?_SENDDATA?MAIN
   +--> ?PR?CLEARSDAT?MAIN
 
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 3
 
 
 ?PR?_DEALDATA?MAIN                        0097H    0006H
@@ -179,7 +179,7 @@ SEGMENT                                     XDATA_GROUP
   +--> ?PR?_DELAY_MS?MAIN
 
 ?PR?_DELAY_MS?MAIN                        -----    -----
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 4
 
 
   +--> ?PR?_DISPLAY?MAIN
@@ -187,7 +187,7 @@ SEGMENT                                     XDATA_GROUP
 ?PR?_CHECKKEY_S2?MAIN                     00ABH    0001H
   +--> ?PR?_DELAY_MS?MAIN
 
-?PR?_CLOSEBUZZER_S3?MAIN                  -----    -----
+?PR?_CLOSEBUZZER_S3?MAIN                  00ABH    0006H
   +--> ?PR?_DELAY_MS?MAIN
   +--> ?PR?BUZZER_CLOSE?MAIN
 
@@ -218,17 +218,17 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   D:0090H         PUBLIC        P1
   D:00A0H         PUBLIC        P2
   D:00B0H         PUBLIC        P3
-  C:093CH         PUBLIC        checkAlarmTime
+  C:09ABH         PUBLIC        checkAlarmTime
   B:00A8H.7       PUBLIC        EA
   X:0001H         PUBLIC        alarmMinute
-  C:0CB9H         PUBLIC        buzzer_reverse
+  C:0D01H         PUBLIC        buzzer_reverse
   X:0002H         SYMBOL        codeTable
   X:0012H         PUBLIC        countSecond
   X:0013H         PUBLIC        alarmFlag
   D:00A8H         PUBLIC        IE
-  C:083DH         PUBLIC        T0_func
+  C:08ACH         PUBLIC        T0_func
   C:0026H         PUBLIC        _dealData
-  C:0A1EH         PUBLIC        _showFourNum
+  C:0A8DH         PUBLIC        _showFourNum
   C:0626H         PUBLIC        updateTimeData
   X:0014H         PUBLIC        minute
   B:00A8H.4       PUBLIC        ES
@@ -238,43 +238,43 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   X:0016H         SYMBOL        maskTable
   B:0098H.0       PUBLIC        RI
   B:0098H.1       PUBLIC        TI
-  C:0BE8H         PUBLIC        stayThreeSecond
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 5
+  C:0C30H         PUBLIC        stayThreeSecond
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 5
 
 
-  C:0CB6H         PUBLIC        buzzer_close
+  C:0CFEH         PUBLIC        buzzer_close
   X:001CH         SYMBOL        ledTable
   X:0024H         PUBLIC        modeFlag
   X:0025H         PUBLIC        alarmYear
   B:00B0H.4       PUBLIC        s1
   B:00B0H.5       PUBLIC        s2
   B:00B0H.6       PUBLIC        s3
-  C:07E6H         PUBLIC        main
-  C:0B54H         PUBLIC        _closeBuzzer_s3
+  C:078AH         PUBLIC        main
+  C:07EEH         PUBLIC        _closeBuzzer_s3
   X:0027H         PUBLIC        sendIndex
   B:00A0H.6       PUBLIC        dula
   C:0718H         PUBLIC        _getWorkDayFromMonth
-  C:0893H         PUBLIC        _sendData
+  C:0902H         PUBLIC        _sendData
   X:0028H         PUBLIC        month
   B:00A0H.7       PUBLIC        wela
-  C:08E9H         PUBLIC        _showSixNum
-  C:098CH         PUBLIC        _setAlarmClock
+  C:0958H         PUBLIC        _showSixNum
+  C:09FBH         PUBLIC        _setAlarmClock
   X:0029H         PUBLIC        week
   X:002AH         PUBLIC        sdat
   X:006AH         PUBLIC        alarmDay
   X:006BH         PUBLIC        alarmHour
-  C:0BC5H         PUBLIC        _checkKey_s1
+  C:0C0DH         PUBLIC        _checkKey_s1
   D:0099H         PUBLIC        SBUF
   D:0087H         PUBLIC        PCON
-  C:0BA1H         PUBLIC        _checkKey_s2
+  C:0BE9H         PUBLIC        _checkKey_s2
   X:006CH         PUBLIC        year
   D:0098H         PUBLIC        SCON
   D:0089H         PUBLIC        TMOD
   D:0088H         PUBLIC        TCON
   X:006EH         PUBLIC        T0Num
-  C:0CABH         PUBLIC        clearSDAT
+  C:0CF3H         PUBLIC        clearSDAT
   C:0007H         PUBLIC        buzzer_open
-  C:0A63H         PUBLIC        _judgeLeapOrOrdinaryYear
+  C:0AD2H         PUBLIC        _judgeLeapOrOrdinaryYear
   C:0003H         PUBLIC        clearAllLed
   X:006FH         PUBLIC        getData
   X:0070H         PUBLIC        day
@@ -286,8 +286,8 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   X:0084H         PUBLIC        monthDay
   B:00A8H.1       PUBLIC        ET0
   B:00A8H.3       PUBLIC        ET1
-  C:078AH         PUBLIC        _getYearFromQuestion
-  C:0C9BH         PUBLIC        timerInit_0
+  C:0850H         PUBLIC        _getYearFromQuestion
+  C:0CE3H         PUBLIC        timerInit_0
   D:008CH         PUBLIC        TH0
   C:04FEH         PUBLIC        uart_func
   D:008DH         PUBLIC        TH1
@@ -295,57 +295,57 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   C:044CH         PUBLIC        _getWeek
   D:008AH         PUBLIC        TL0
   D:008BH         PUBLIC        TL1
-  C:0B0AH         PUBLIC        _delay_ms
-  C:0C77H         PUBLIC        uart_init
+  C:0B79H         PUBLIC        _delay_ms
+  C:0CBFH         PUBLIC        uart_init
   C:000EH         PUBLIC        _getSDATLength
-  C:0A9AH         PUBLIC        showTime_MS
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 6
+  C:0B09H         PUBLIC        showTime_MS
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 6
 
 
   B:0088H.4       PUBLIC        TR0
   B:0088H.6       PUBLIC        TR1
-  C:0C43H         PUBLIC        _showLed
-  C:0C07H         PUBLIC        _data_rl
-  C:0C8AH         PUBLIC        _delay_us
-  C:0ACAH         PUBLIC        showTime_MonthDay
+  C:0C8BH         PUBLIC        _showLed
+  C:0C4FH         PUBLIC        _data_rl
+  C:0CD2H         PUBLIC        _delay_us
+  C:0B39H         PUBLIC        showTime_MonthDay
   X:0091H         PUBLIC        sp
   B:00A0H.3       PUBLIC        BUZZER
-  C:09FFH         PUBLIC        _getTimeFromData
+  C:0A6EH         PUBLIC        _getTimeFromData
   D:00C8H         PUBLIC        T2CON
-  C:0B7BH         PUBLIC        showWeekLed
-  C:0C25H         PUBLIC        _getMonthDay
-  C:0C5DH         PUBLIC        sendAllSDAT
-  C:0B28H         PUBLIC        _display
+  C:0BC3H         PUBLIC        showWeekLed
+  C:0C6DH         PUBLIC        _getMonthDay
+  C:0CA5H         PUBLIC        sendAllSDAT
+  C:0B97H         PUBLIC        _display
   D:00D0H         PUBLIC        PSW
-  C:0AFFH         SYMBOL        L?0165
-  C:0B03H         SYMBOL        L?0166
-  C:0B06H         SYMBOL        L?0167
+  C:0B6EH         SYMBOL        L?0165
+  C:0B72H         SYMBOL        L?0166
+  C:0B75H         SYMBOL        L?0167
   -------         PROC          L?0164
   -------         ENDPROC       L?0164
-  C:0AFFH         SYMBOL        L?0165
-  C:0B03H         SYMBOL        L?0166
-  C:0B06H         SYMBOL        L?0167
+  C:0B6EH         SYMBOL        L?0165
+  C:0B72H         SYMBOL        L?0166
+  C:0B75H         SYMBOL        L?0167
   -------         PROC          _DELAY_MS
   D:0006H         SYMBOL        ms
   -------         DO            
   D:0006H         SYMBOL        a
   D:0004H         SYMBOL        b
   -------         ENDDO         
-  C:0B0AH         LINE#         4
-  C:0B0AH         LINE#         5
-  C:0B0AH         LINE#         8
-  C:0B13H         LINE#         9
-  C:0B27H         LINE#         10
+  C:0B79H         LINE#         4
+  C:0B79H         LINE#         5
+  C:0B79H         LINE#         8
+  C:0B82H         LINE#         9
+  C:0B96H         LINE#         10
   -------         ENDPROC       _DELAY_MS
   -------         PROC          _DELAY_US
   D:0006H         SYMBOL        us
   -------         DO            
   D:0006H         SYMBOL        a
   -------         ENDDO         
-  C:0C8AH         LINE#         12
-  C:0C8AH         LINE#         13
-  C:0C8AH         LINE#         15
-  C:0C9AH         LINE#         16
+  C:0CD2H         LINE#         12
+  C:0CD2H         LINE#         13
+  C:0CD2H         LINE#         15
+  C:0CE2H         LINE#         16
   -------         ENDPROC       _DELAY_US
   -------         PROC          BUZZER_OPEN
   C:0007H         LINE#         6
@@ -354,39 +354,39 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   C:0009H         LINE#         9
   -------         ENDPROC       BUZZER_OPEN
   -------         PROC          BUZZER_CLOSE
-  C:0CB6H         LINE#         10
-  C:0CB6H         LINE#         11
-  C:0CB6H         LINE#         12
-  C:0CB8H         LINE#         13
+  C:0CFEH         LINE#         10
+  C:0CFEH         LINE#         11
+  C:0CFEH         LINE#         12
+  C:0D00H         LINE#         13
   -------         ENDPROC       BUZZER_CLOSE
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 7
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 7
 
 
   -------         PROC          BUZZER_REVERSE
-  C:0CB9H         LINE#         14
-  C:0CB9H         LINE#         15
-  C:0CB9H         LINE#         16
-  C:0CBBH         LINE#         17
+  C:0D01H         LINE#         14
+  C:0D01H         LINE#         15
+  C:0D01H         LINE#         16
+  C:0D03H         LINE#         17
   -------         ENDPROC       BUZZER_REVERSE
   -------         PROC          _DISPLAY
   D:0007H         SYMBOL        mask
   D:0005H         SYMBOL        num
   D:0003H         SYMBOL        point
-  C:0B28H         LINE#         16
-  C:0B28H         LINE#         17
-  C:0B28H         LINE#         18
-  C:0B2AH         LINE#         19
-  C:0B2CH         LINE#         20
-  C:0B2EH         LINE#         21
-  C:0B31H         LINE#         22
-  C:0B31H         LINE#         23
-  C:0B40H         LINE#         24
-  C:0B42H         LINE#         26
-  C:0B42H         LINE#         27
-  C:0B4FH         LINE#         28
-  C:0B4FH         LINE#         29
-  C:0B51H         LINE#         30
-  C:0B53H         LINE#         31
+  C:0B97H         LINE#         16
+  C:0B97H         LINE#         17
+  C:0B97H         LINE#         18
+  C:0B99H         LINE#         19
+  C:0B9BH         LINE#         20
+  C:0B9DH         LINE#         21
+  C:0BA0H         LINE#         22
+  C:0BA0H         LINE#         23
+  C:0BAFH         LINE#         24
+  C:0BB1H         LINE#         26
+  C:0BB1H         LINE#         27
+  C:0BBEH         LINE#         28
+  C:0BBEH         LINE#         29
+  C:0BC0H         LINE#         30
+  C:0BC2H         LINE#         31
   -------         ENDPROC       _DISPLAY
   -------         PROC          _SHOWSIXNUM
   D:0006H         SYMBOL        num1
@@ -395,20 +395,20 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   X:00B6H         SYMBOL        num4
   X:00B7H         SYMBOL        num5
   X:00B8H         SYMBOL        num6
-  C:08E9H         LINE#         33
-  C:08EFH         LINE#         34
-  C:08EFH         LINE#         36
-  C:08EFH         LINE#         37
-  C:08F2H         LINE#         38
-  C:08FCH         LINE#         39
-  C:08FFH         LINE#         40
-  C:0909H         LINE#         41
-  C:090CH         LINE#         42
-  C:0917H         LINE#         43
-  C:091AH         LINE#         44
-  C:0925H         LINE#         45
-  C:0928H         LINE#         46
-  C:0935H         LINE#         47
+  C:0958H         LINE#         33
+  C:095EH         LINE#         34
+  C:095EH         LINE#         36
+  C:095EH         LINE#         37
+  C:0961H         LINE#         38
+  C:096BH         LINE#         39
+  C:096EH         LINE#         40
+  C:0978H         LINE#         41
+  C:097BH         LINE#         42
+  C:0986H         LINE#         43
+  C:0989H         LINE#         44
+  C:0994H         LINE#         45
+  C:0997H         LINE#         46
+  C:09A4H         LINE#         47
   -------         ENDPROC       _SHOWSIXNUM
   -------         PROC          _SHOWFOURNUM
   D:0006H         SYMBOL        num1
@@ -416,87 +416,89 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   D:0001H         SYMBOL        num3
   X:00B1H         SYMBOL        num4
   X:00B2H         SYMBOL        point
-  C:0A1EH         LINE#         50
-  C:0A24H         LINE#         51
-  C:0A24H         LINE#         53
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 8
+  C:0A8DH         LINE#         50
+  C:0A93H         LINE#         51
+  C:0A93H         LINE#         53
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 8
 
 
-  C:0A24H         LINE#         54
-  C:0A27H         LINE#         55
-  C:0A37H         LINE#         56
-  C:0A42H         LINE#         57
-  C:0A45H         LINE#         58
-  C:0A4CH         LINE#         59
-  C:0A4FH         LINE#         60
-  C:0A5CH         LINE#         61
+  C:0A93H         LINE#         54
+  C:0A96H         LINE#         55
+  C:0AA6H         LINE#         56
+  C:0AB1H         LINE#         57
+  C:0AB4H         LINE#         58
+  C:0ABBH         LINE#         59
+  C:0ABEH         LINE#         60
+  C:0ACBH         LINE#         61
   -------         ENDPROC       _SHOWFOURNUM
   -------         PROC          TIMERINIT_0
-  C:0C9BH         LINE#         6
-  C:0C9BH         LINE#         7
-  C:0C9BH         LINE#         8
-  C:0C9EH         LINE#         9
-  C:0CA1H         LINE#         10
-  C:0CA4H         LINE#         11
-  C:0CA6H         LINE#         12
-  C:0CA8H         LINE#         13
-  C:0CAAH         LINE#         14
+  C:0CE3H         LINE#         6
+  C:0CE3H         LINE#         7
+  C:0CE3H         LINE#         8
+  C:0CE6H         LINE#         9
+  C:0CE9H         LINE#         10
+  C:0CECH         LINE#         11
+  C:0CEEH         LINE#         12
+  C:0CF0H         LINE#         13
+  C:0CF2H         LINE#         14
   -------         ENDPROC       TIMERINIT_0
   -------         PROC          _CHECKKEY_S1
   D:0001H         SYMBOL        keyFlag
   X:00ABH         SYMBOL        modeFlag
-  C:0BC5H         LINE#         10
-  C:0BCAH         LINE#         11
-  C:0BCAH         LINE#         12
-  C:0BD2H         LINE#         13
-  C:0BD2H         LINE#         14
-  C:0BD8H         LINE#         15
-  C:0BDBH         LINE#         16
-  C:0BDBH         LINE#         17
-  C:0BE0H         LINE#         18
-  C:0BE2H         LINE#         19
-  C:0BE2H         LINE#         20
-  C:0BE2H         LINE#         21
-  C:0BE7H         LINE#         22
+  C:0C0DH         LINE#         10
+  C:0C12H         LINE#         11
+  C:0C12H         LINE#         12
+  C:0C1AH         LINE#         13
+  C:0C1AH         LINE#         14
+  C:0C20H         LINE#         15
+  C:0C23H         LINE#         16
+  C:0C23H         LINE#         17
+  C:0C28H         LINE#         18
+  C:0C2AH         LINE#         19
+  C:0C2AH         LINE#         20
+  C:0C2AH         LINE#         21
+  C:0C2FH         LINE#         22
   -------         ENDPROC       _CHECKKEY_S1
   -------         PROC          _CHECKKEY_S2
   D:0001H         SYMBOL        keyFlag
   X:00ABH         SYMBOL        modeFlag
-  C:0BA1H         LINE#         24
-  C:0BA6H         LINE#         25
-  C:0BA6H         LINE#         26
-  C:0BAEH         LINE#         27
-  C:0BAEH         LINE#         28
-  C:0BB4H         LINE#         29
-  C:0BB7H         LINE#         30
-  C:0BB7H         LINE#         31
-  C:0BBCH         LINE#         32
-  C:0BBFH         LINE#         33
-  C:0BBFH         LINE#         34
-  C:0BBFH         LINE#         35
-  C:0BC4H         LINE#         36
+  C:0BE9H         LINE#         24
+  C:0BEEH         LINE#         25
+  C:0BEEH         LINE#         26
+  C:0BF6H         LINE#         27
+  C:0BF6H         LINE#         28
+  C:0BFCH         LINE#         29
+  C:0BFFH         LINE#         30
+  C:0BFFH         LINE#         31
+  C:0C04H         LINE#         32
+  C:0C07H         LINE#         33
+  C:0C07H         LINE#         34
+  C:0C07H         LINE#         35
+  C:0C0CH         LINE#         36
   -------         ENDPROC       _CHECKKEY_S2
   -------         PROC          _CLOSEBUZZER_S3
-  D:0001H         SYMBOL        keyFlag
-  C:0B54H         LINE#         38
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 9
+  X:00ABH         SYMBOL        keyFlag
+  X:00AEH         SYMBOL        alarmFlag
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 9
 
 
-  C:0B54H         LINE#         39
-  C:0B54H         LINE#         40
-  C:0B5CH         LINE#         41
-  C:0B5CH         LINE#         42
-  C:0B62H         LINE#         43
-  C:0B65H         LINE#         44
-  C:0B65H         LINE#         45
-  C:0B6AH         LINE#         46
-  C:0B6DH         LINE#         47
-  C:0B6DH         LINE#         48
-  C:0B6DH         LINE#         49
-  C:0B76H         LINE#         50
-  C:0B76H         LINE#         51
-  C:0B7AH         LINE#         52
-  C:0B7AH         LINE#         53
+  C:07EEH         LINE#         38
+  C:07F9H         LINE#         39
+  C:07F9H         LINE#         40
+  C:080CH         LINE#         41
+  C:080CH         LINE#         42
+  C:0812H         LINE#         43
+  C:0815H         LINE#         44
+  C:0815H         LINE#         45
+  C:0825H         LINE#         46
+  C:0834H         LINE#         47
+  C:0837H         LINE#         48
+  C:0837H         LINE#         49
+  C:0837H         LINE#         50
+  C:084BH         LINE#         51
+  C:084BH         LINE#         52
+  C:084FH         LINE#         53
+  C:084FH         LINE#         54
   -------         ENDPROC       _CLOSEBUZZER_S3
   -------         PROC          _SHOWLED
   D:0007H         SYMBOL        num
@@ -504,12 +506,12 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   -------         DO            
   D:0007H         SYMBOL        led
   -------         ENDDO         
-  C:0C43H         LINE#         12
-  C:0C43H         LINE#         13
-  C:0C43H         LINE#         14
-  C:0C4FH         LINE#         15
-  C:0C58H         LINE#         16
-  C:0C5CH         LINE#         17
+  C:0C8BH         LINE#         12
+  C:0C8BH         LINE#         13
+  C:0C8BH         LINE#         14
+  C:0C97H         LINE#         15
+  C:0CA0H         LINE#         16
+  C:0CA4H         LINE#         17
   -------         ENDPROC       _SHOWLED
   -------         PROC          _DATA_RL
   D:0007H         SYMBOL        x
@@ -518,13 +520,13 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   -------         DO            
   D:0006H         SYMBOL        temp
   -------         ENDDO         
-  C:0C07H         LINE#         19
-  C:0C07H         LINE#         20
-  C:0C07H         LINE#         22
-  C:0C16H         LINE#         23
-  C:0C22H         LINE#         24
-  C:0C24H         LINE#         25
-  C:0C24H         LINE#         26
+  C:0C4FH         LINE#         19
+  C:0C4FH         LINE#         20
+  C:0C4FH         LINE#         22
+  C:0C5EH         LINE#         23
+  C:0C6AH         LINE#         24
+  C:0C6CH         LINE#         25
+  C:0C6CH         LINE#         26
   -------         ENDPROC       _DATA_RL
   -------         PROC          CLEARALLLED
   C:0003H         LINE#         28
@@ -533,53 +535,53 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   C:0006H         LINE#         31
   -------         ENDPROC       CLEARALLLED
   -------         PROC          UART_INIT
-  C:0C77H         LINE#         6
-  C:0C77H         LINE#         7
-  C:0C77H         LINE#         8
-  C:0C7AH         LINE#         9
-  C:0C7DH         LINE#         10
-  C:0C80H         LINE#         11
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 10
+  C:0CBFH         LINE#         6
+  C:0CBFH         LINE#         7
+  C:0CBFH         LINE#         8
+  C:0CC2H         LINE#         9
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 10
 
 
-  C:0C83H         LINE#         12
-  C:0C83H         LINE#         13
-  C:0C85H         LINE#         14
-  C:0C87H         LINE#         15
-  C:0C89H         LINE#         16
+  C:0CC5H         LINE#         10
+  C:0CC8H         LINE#         11
+  C:0CCBH         LINE#         12
+  C:0CCBH         LINE#         13
+  C:0CCDH         LINE#         14
+  C:0CCFH         LINE#         15
+  C:0CD1H         LINE#         16
   -------         ENDPROC       UART_INIT
   -------         PROC          MAIN
-  C:07E6H         LINE#         56
-  C:07E6H         LINE#         57
-  C:07E6H         LINE#         59
-  C:07E9H         LINE#         60
-  C:07ECH         LINE#         61
-  C:07F4H         LINE#         62
-  C:07F7H         LINE#         63
-  C:07FAH         LINE#         65
-  C:07FAH         LINE#         66
-  C:07FAH         LINE#         67
-  C:07FDH         LINE#         68
-  C:0811H         LINE#         69
-  C:0819H         LINE#         70
-  C:0820H         LINE#         71
-  C:082EH         LINE#         72
-  C:0833H         LINE#         73
-  C:0838H         LINE#         74
+  C:078AH         LINE#         56
+  C:078AH         LINE#         57
+  C:078AH         LINE#         59
+  C:078DH         LINE#         60
+  C:0790H         LINE#         61
+  C:0798H         LINE#         62
+  C:079BH         LINE#         63
+  C:079EH         LINE#         65
+  C:079EH         LINE#         66
+  C:079EH         LINE#         67
+  C:07A1H         LINE#         68
+  C:07B5H         LINE#         69
+  C:07BDH         LINE#         70
+  C:07D1H         LINE#         71
+  C:07DFH         LINE#         72
+  C:07E4H         LINE#         73
+  C:07E9H         LINE#         74
   -------         ENDPROC       MAIN
   -------         PROC          T0_FUNC
-  C:083DH         LINE#         81
-  C:085AH         LINE#         85
-  C:085DH         LINE#         86
-  C:0860H         LINE#         87
-  C:0866H         LINE#         88
-  C:086AH         LINE#         89
-  C:086AH         LINE#         90
-  C:086CH         LINE#         91
-  C:0872H         LINE#         92
-  C:0875H         LINE#         93
-  C:0875H         LINE#         94
-  C:0878H         LINE#         95
+  C:08ACH         LINE#         81
+  C:08C9H         LINE#         85
+  C:08CCH         LINE#         86
+  C:08CFH         LINE#         87
+  C:08D5H         LINE#         88
+  C:08D9H         LINE#         89
+  C:08D9H         LINE#         90
+  C:08DBH         LINE#         91
+  C:08E1H         LINE#         92
+  C:08E4H         LINE#         93
+  C:08E4H         LINE#         94
+  C:08E7H         LINE#         95
   -------         ENDPROC       T0_FUNC
   -------         PROC          UPDATETIMEDATA
   C:0626H         LINE#         97
@@ -597,11 +599,11 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   C:0649H         LINE#         109
   C:0649H         LINE#         110
   C:064BH         LINE#         111
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 11
+
+
   C:0651H         LINE#         112
   C:0651H         LINE#         113
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 11
-
-
   C:065AH         LINE#         114
   C:065AH         LINE#         115
   C:065CH         LINE#         116
@@ -626,13 +628,13 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   D:0003H         SYMBOL        s1
   D:0004H         SYMBOL        s2
   -------         ENDDO         
-  C:0A9AH         LINE#         131
-  C:0A9AH         LINE#         132
-  C:0A9AH         LINE#         134
-  C:0AA5H         LINE#         135
-  C:0AABH         LINE#         136
-  C:0AB6H         LINE#         137
-  C:0ABCH         LINE#         138
+  C:0B09H         LINE#         131
+  C:0B09H         LINE#         132
+  C:0B09H         LINE#         134
+  C:0B14H         LINE#         135
+  C:0B1AH         LINE#         136
+  C:0B25H         LINE#         137
+  C:0B2BH         LINE#         138
   -------         ENDPROC       SHOWTIME_MS
   -------         PROC          SHOWTIME_YEAR
   -------         DO            
@@ -657,35 +659,35 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   -------         PROC          SHOWTIME_MONTHDAY
   -------         DO            
   D:0007H         SYMBOL        m1
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 12
+
+
   D:0006H         SYMBOL        m2
   D:0003H         SYMBOL        d1
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 12
-
-
   D:0004H         SYMBOL        d2
   -------         ENDDO         
-  C:0ACAH         LINE#         155
-  C:0ACAH         LINE#         156
-  C:0ACAH         LINE#         158
-  C:0AD5H         LINE#         159
-  C:0ADBH         LINE#         160
-  C:0AE6H         LINE#         161
-  C:0AECH         LINE#         162
+  C:0B39H         LINE#         155
+  C:0B39H         LINE#         156
+  C:0B39H         LINE#         158
+  C:0B44H         LINE#         159
+  C:0B4AH         LINE#         160
+  C:0B55H         LINE#         161
+  C:0B5BH         LINE#         162
   -------         ENDPROC       SHOWTIME_MONTHDAY
   -------         PROC          STAYTHREESECOND
-  C:0BE8H         LINE#         165
-  C:0BE8H         LINE#         166
-  C:0BE8H         LINE#         167
-  C:0BEFH         LINE#         168
-  C:0BEFH         LINE#         169
-  C:0BF5H         LINE#         170
-  C:0BF9H         LINE#         171
-  C:0BF9H         LINE#         172
-  C:0BFEH         LINE#         173
-  C:0C02H         LINE#         174
-  C:0C06H         LINE#         175
-  C:0C06H         LINE#         176
-  C:0C06H         LINE#         177
+  C:0C30H         LINE#         165
+  C:0C30H         LINE#         166
+  C:0C30H         LINE#         167
+  C:0C37H         LINE#         168
+  C:0C37H         LINE#         169
+  C:0C3DH         LINE#         170
+  C:0C41H         LINE#         171
+  C:0C41H         LINE#         172
+  C:0C46H         LINE#         173
+  C:0C4AH         LINE#         174
+  C:0C4EH         LINE#         175
+  C:0C4EH         LINE#         176
+  C:0C4EH         LINE#         177
   -------         ENDPROC       STAYTHREESECOND
   C:043AH         SYMBOL        L?0169
   -------         PROC          L?0168
@@ -717,24 +719,24 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   C:04A3H         LINE#         195
   C:04FDH         LINE#         196
   C:04FDH         LINE#         197
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 13
+
+
   -------         ENDPROC       _GETWEEK
   -------         PROC          SHOWWEEKLED
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 13
-
-
-  C:0B7BH         LINE#         199
-  C:0B7BH         LINE#         200
-  C:0B7BH         LINE#         201
-  C:0B81H         LINE#         202
-  C:0B81H         LINE#         203
-  C:0B89H         LINE#         204
-  C:0B93H         LINE#         205
-  C:0B99H         LINE#         206
-  C:0B9AH         LINE#         208
-  C:0B9AH         LINE#         209
-  C:0B9DH         LINE#         210
-  C:0BA0H         LINE#         211
-  C:0BA0H         LINE#         212
+  C:0BC3H         LINE#         199
+  C:0BC3H         LINE#         200
+  C:0BC3H         LINE#         201
+  C:0BC9H         LINE#         202
+  C:0BC9H         LINE#         203
+  C:0BD1H         LINE#         204
+  C:0BDBH         LINE#         205
+  C:0BE1H         LINE#         206
+  C:0BE2H         LINE#         208
+  C:0BE2H         LINE#         209
+  C:0BE5H         LINE#         210
+  C:0BE8H         LINE#         211
+  C:0BE8H         LINE#         212
   -------         ENDPROC       SHOWWEEKLED
   -------         PROC          UART_FUNC
   -------         DO            
@@ -777,11 +779,11 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   -------         ENDDO         
   C:0026H         LINE#         259
   C:0031H         LINE#         260
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 14
+
+
   C:0031H         LINE#         261
   C:0034H         LINE#         262
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 14
-
-
   C:0036H         LINE#         264
   C:004EH         LINE#         266
   C:0064H         LINE#         267
@@ -824,10 +826,10 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   C:0169H         LINE#         305
   C:0169H         LINE#         306
   -------         ENDPROC       _DEALDATA
-  C:09FBH         SYMBOL        L?0163
+  C:0A6AH         SYMBOL        L?0163
   -------         PROC          L?0162
   -------         ENDPROC       L?0162
-  C:09FBH         SYMBOL        L?0163
+  C:0A6AH         SYMBOL        L?0163
   -------         PROC          _GETTIMEFROMDATA
   D:0001H         SYMBOL        point
   -------         DO            
@@ -835,73 +837,73 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   D:0005H         SYMBOL        i
   D:0006H         SYMBOL        returnValue
   -------         ENDDO         
-  C:09FFH         LINE#         308
-  C:09FFH         LINE#         309
-  C:09FFH         LINE#         310
-  C:0A00H         LINE#         311
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 15
+  C:0A6EH         LINE#         308
+  C:0A6EH         LINE#         309
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 15
 
 
-  C:0A01H         LINE#         312
-  C:0A02H         LINE#         313
-  C:0A02H         LINE#         314
-  C:0A08H         LINE#         315
-  C:0A0DH         LINE#         316
-  C:0A0FH         LINE#         317
-  C:0A16H         LINE#         318
-  C:0A1BH         LINE#         319
-  C:0A1DH         LINE#         320
+  C:0A6EH         LINE#         310
+  C:0A6FH         LINE#         311
+  C:0A70H         LINE#         312
+  C:0A71H         LINE#         313
+  C:0A71H         LINE#         314
+  C:0A77H         LINE#         315
+  C:0A7CH         LINE#         316
+  C:0A7EH         LINE#         317
+  C:0A85H         LINE#         318
+  C:0A8AH         LINE#         319
+  C:0A8CH         LINE#         320
   -------         ENDPROC       _GETTIMEFROMDATA
   -------         PROC          CLEARSDAT
   -------         DO            
   D:0007H         SYMBOL        i
   -------         ENDDO         
-  C:0CABH         LINE#         322
-  C:0CABH         LINE#         323
-  C:0CABH         LINE#         325
-  C:0CABH         LINE#         326
-  C:0CABH         LINE#         327
-  C:0CB5H         LINE#         328
-  C:0CB5H         LINE#         329
+  C:0CF3H         LINE#         322
+  C:0CF3H         LINE#         323
+  C:0CF3H         LINE#         325
+  C:0CF3H         LINE#         326
+  C:0CF3H         LINE#         327
+  C:0CFDH         LINE#         328
+  C:0CFDH         LINE#         329
   -------         ENDPROC       CLEARSDAT
   -------         PROC          _JUDGELEAPORORDINARYYEAR
   D:0006H         SYMBOL        tYear
   -------         DO            
   D:0002H         SYMBOL        tempYear
   -------         ENDDO         
-  C:0A63H         LINE#         331
-  C:0A63H         LINE#         332
-  C:0A63H         LINE#         333
-  C:0A67H         LINE#         334
-  C:0A94H         LINE#         335
-  C:0A94H         LINE#         336
-  C:0A97H         LINE#         337
-  C:0A97H         LINE#         338
-  C:0A99H         LINE#         339
+  C:0AD2H         LINE#         331
+  C:0AD2H         LINE#         332
+  C:0AD2H         LINE#         333
+  C:0AD6H         LINE#         334
+  C:0B03H         LINE#         335
+  C:0B03H         LINE#         336
+  C:0B06H         LINE#         337
+  C:0B06H         LINE#         338
+  C:0B08H         LINE#         339
   -------         ENDPROC       _JUDGELEAPORORDINARYYEAR
   -------         PROC          _GETMONTHDAY
   D:0007H         SYMBOL        tYear
   D:0001H         SYMBOL        tMonth
-  C:0C25H         LINE#         341
-  C:0C27H         LINE#         342
-  C:0C27H         LINE#         343
-  C:0C2BH         LINE#         344
-  C:0C2BH         LINE#         345
-  C:0C33H         LINE#         346
-  C:0C33H         LINE#         347
-  C:0C36H         LINE#         348
-  C:0C36H         LINE#         349
-  C:0C36H         LINE#         350
-  C:0C42H         LINE#         351
+  C:0C6DH         LINE#         341
+  C:0C6FH         LINE#         342
+  C:0C6FH         LINE#         343
+  C:0C73H         LINE#         344
+  C:0C73H         LINE#         345
+  C:0C7BH         LINE#         346
+  C:0C7BH         LINE#         347
+  C:0C7EH         LINE#         348
+  C:0C7EH         LINE#         349
+  C:0C7EH         LINE#         350
+  C:0C8AH         LINE#         351
   -------         ENDPROC       _GETMONTHDAY
   -------         PROC          _GETSDATLENGTH
   D:0001H         SYMBOL        point
   -------         DO            
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 16
+
+
   D:0007H         SYMBOL        i
   -------         ENDDO         
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 16
-
-
   C:000EH         LINE#         353
   C:000EH         LINE#         354
   C:000EH         LINE#         355
@@ -957,11 +959,11 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   C:020AH         LINE#         399
   C:021AH         LINE#         400
   C:0226H         LINE#         401
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 17
+
+
   C:0231H         LINE#         402
   C:0235H         LINE#         403
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 17
-
-
   C:0236H         LINE#         404
   C:023EH         LINE#         405
   C:023EH         LINE#         408
@@ -979,20 +981,20 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   X:00A3H         SYMBOL        temp
   X:00A4H         SYMBOL        yearGo
   -------         ENDDO         
-  C:078AH         LINE#         423
-  C:078AH         LINE#         424
-  C:078AH         LINE#         426
-  C:0791H         LINE#         427
-  C:0795H         LINE#         428
-  C:079EH         LINE#         429
-  C:079EH         LINE#         430
-  C:07A7H         LINE#         431
-  C:07BCH         LINE#         432
-  C:07CEH         LINE#         433
-  C:07D4H         LINE#         434
-  C:07DBH         LINE#         435
-  C:07DDH         LINE#         436
-  C:07E5H         LINE#         437
+  C:0850H         LINE#         423
+  C:0850H         LINE#         424
+  C:0850H         LINE#         426
+  C:0857H         LINE#         427
+  C:085BH         LINE#         428
+  C:0864H         LINE#         429
+  C:0864H         LINE#         430
+  C:086DH         LINE#         431
+  C:0882H         LINE#         432
+  C:0894H         LINE#         433
+  C:089AH         LINE#         434
+  C:08A1H         LINE#         435
+  C:08A3H         LINE#         436
+  C:08ABH         LINE#         437
   -------         ENDPROC       _GETYEARFROMQUESTION
   -------         PROC          _SENDDATA
   X:0097H         SYMBOL        point
@@ -1000,28 +1002,28 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   D:0007H         SYMBOL        i
   X:009AH         SYMBOL        temp
   -------         ENDDO         
-  C:0893H         LINE#         439
-  C:089EH         LINE#         440
-  C:089EH         LINE#         442
-  C:08A7H         LINE#         444
-  C:08BAH         LINE#         445
-  C:08BAH         LINE#         446
-  C:08BCH         LINE#         447
-  C:08BFH         LINE#         448
-  C:08C1H         LINE#         449
-  C:08CBH         LINE#         450
-  C:08CDH         LINE#         452
-  C:08CFH         LINE#         453
-  C:08CFH         LINE#         454
-  C:08E3H         LINE#         455
-  C:08E8H         LINE#         456
+  C:0902H         LINE#         439
+  C:090DH         LINE#         440
+  C:090DH         LINE#         442
+  C:0916H         LINE#         444
+  C:0929H         LINE#         445
+  C:0929H         LINE#         446
+  C:092BH         LINE#         447
+  C:092EH         LINE#         448
+  C:0930H         LINE#         449
+  C:093AH         LINE#         450
+  C:093CH         LINE#         452
+  C:093EH         LINE#         453
+  C:093EH         LINE#         454
+  C:0952H         LINE#         455
+  C:0957H         LINE#         456
   -------         ENDPROC       _SENDDATA
   -------         PROC          _GETWORKDAYFROMMONTH
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 18
+
+
   X:00A2H         SYMBOL        yearGo
   X:00A4H         SYMBOL        monthGo
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 18
-
-
   -------         DO            
   X:00A5H         SYMBOL        tempWeek
   D:0001H         SYMBOL        tempDay
@@ -1050,60 +1052,60 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
   D:0003H         SYMBOL        dayGo
   X:00A6H         SYMBOL        hourGo
   X:00A7H         SYMBOL        minuteGo
-  C:098CH         LINE#         482
-  C:098CH         LINE#         483
-  C:098CH         LINE#         484
-  C:0994H         LINE#         485
-  C:0999H         LINE#         486
-  C:099EH         LINE#         487
-  C:09A6H         LINE#         488
-  C:09AEH         LINE#         489
-  C:09B4H         LINE#         492
-  C:09BAH         LINE#         493
-  C:09BEH         LINE#         494
-  C:09C2H         LINE#         495
-  C:09C6H         LINE#         496
-  C:09CAH         LINE#         497
-  C:09CEH         LINE#         498
-  C:09D2H         LINE#         499
-  C:09D6H         LINE#         500
+  C:09FBH         LINE#         482
+  C:09FBH         LINE#         483
+  C:09FBH         LINE#         484
+  C:0A03H         LINE#         485
+  C:0A08H         LINE#         486
+  C:0A0DH         LINE#         487
+  C:0A15H         LINE#         488
+  C:0A1DH         LINE#         489
+  C:0A23H         LINE#         492
+  C:0A29H         LINE#         493
+  C:0A2DH         LINE#         494
+  C:0A31H         LINE#         495
+  C:0A35H         LINE#         496
+  C:0A39H         LINE#         497
+  C:0A3DH         LINE#         498
+  C:0A41H         LINE#         499
+  C:0A45H         LINE#         500
   -------         ENDPROC       _SETALARMCLOCK
   -------         PROC          CHECKALARMTIME
-  C:093CH         LINE#         503
-  C:093CH         LINE#         504
-  C:093CH         LINE#         505
-  C:0954H         LINE#         506
-  C:0954H         LINE#         507
-  C:096CH         LINE#         508
-  C:096CH         LINE#         509
-  C:0980H         LINE#         510
-  C:0980H         LINE#         511
-  C:0983H         LINE#         512
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 19
+  C:09ABH         LINE#         503
+  C:09ABH         LINE#         504
+  C:09ABH         LINE#         505
+  C:09C3H         LINE#         506
+  C:09C3H         LINE#         507
+  C:09DBH         LINE#         508
+  C:09DBH         LINE#         509
+  C:09EFH         LINE#         510
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 19
 
 
-  C:0983H         LINE#         513
-  C:0983H         LINE#         514
-  C:0983H         LINE#         516
-  C:0983H         LINE#         517
-  C:0986H         LINE#         518
-  C:098BH         LINE#         519
-  C:098BH         LINE#         520
+  C:09EFH         LINE#         511
+  C:09F2H         LINE#         512
+  C:09F2H         LINE#         513
+  C:09F2H         LINE#         514
+  C:09F2H         LINE#         516
+  C:09F2H         LINE#         517
+  C:09F5H         LINE#         518
+  C:09FAH         LINE#         519
+  C:09FAH         LINE#         520
   -------         ENDPROC       CHECKALARMTIME
   -------         PROC          SENDALLSDAT
   -------         DO            
   D:0007H         SYMBOL        i
   -------         ENDDO         
-  C:0C5DH         LINE#         522
-  C:0C5DH         LINE#         523
-  C:0C5DH         LINE#         524
-  C:0C5FH         LINE#         525
-  C:0C5FH         LINE#         526
-  C:0C5FH         LINE#         527
-  C:0C6CH         LINE#         528
-  C:0C6FH         LINE#         529
-  C:0C71H         LINE#         530
-  C:0C76H         LINE#         531
+  C:0CA5H         LINE#         522
+  C:0CA5H         LINE#         523
+  C:0CA5H         LINE#         524
+  C:0CA7H         LINE#         525
+  C:0CA7H         LINE#         526
+  C:0CA7H         LINE#         527
+  C:0CB4H         LINE#         528
+  C:0CB7H         LINE#         529
+  C:0CB9H         LINE#         530
+  C:0CBEH         LINE#         531
   -------         ENDPROC       SENDALLSDAT
   -------         ENDMOD        MAIN
 
@@ -1137,11 +1139,11 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_SHOWSIXNUM?MAIN
 
+BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  18:36:28  PAGE 20
+
+
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?SENDALLSDAT?MAIN
-BL51 BANKED LINKER/LOCATER V6.22                                                      01/05/2020  14:43:47  PAGE 20
-
-
 
 *** WARNING L15: MULTIPLE CALL TO SEGMENT
     SEGMENT: ?PR?_GETWEEK?MAIN
@@ -1153,5 +1155,5 @@ SYMBOL TABLE OF MODULE:  project (MAIN)
     CALLER1: ?PR?UART_FUNC?MAIN
     CALLER2: ?C_C51STARTUP
 
-Program Size: data=9.0 xdata=185 code=3258
+Program Size: data=9.0 xdata=185 code=3330
 LINK/LOCATE RUN COMPLETE.  5 WARNING(S),  0 ERROR(S)

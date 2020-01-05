@@ -67,7 +67,7 @@ int main()
 		updateTimeData();   // 更新时间数据
 		modeFlag = checkKey_s1(&keyFlag,modeFlag); // 检测按键 S1
 		modeFlag = checkKey_s2(&keyFlag,modeFlag); // 检测按键 S2
-		closeBuzzer_s3(&buzzerKeyFlag);			   // 检测按键 S3，若按下，则关闭蜂鸣器
+		closeBuzzer_s3(&buzzerKeyFlag,&alarmFlag);			   // 检测按键 S3，若按下，则关闭蜂鸣器
 		switch(modeFlag){
 			case 0: showTime_MS(); break;
 			case 1: showTime_Year(); break;

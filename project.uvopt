@@ -172,10 +172,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>55</ColumnNumber>
+      <ColumnNumber>42</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>6</TopLine>
+      <CurrentLine>6</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -1625,9 +1625,9 @@
       <Documents>
         <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>55</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
+          <ColumnNumber>42</ColumnNumber>
+          <TopLine>6</TopLine>
+          <CurrentLine>6</CurrentLine>
         </Doc>
         <Doc>
           <Name>LED.H</Name>
@@ -1649,9 +1649,9 @@
         </Doc>
         <Doc>
           <Name>KEY.H</Name>
-          <ColumnNumber>11</ColumnNumber>
+          <ColumnNumber>18</ColumnNumber>
           <TopLine>27</TopLine>
-          <CurrentLine>27</CurrentLine>
+          <CurrentLine>46</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>
