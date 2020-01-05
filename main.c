@@ -7,15 +7,20 @@
 #include "led.h"
 #include "uart.h"
 // 注意事项，使用串口时一定要勾选 “发送新行” 否则出错；设置闹钟要将 “请于” 删除，直接以年份开头
-unsigned int test=0;
+//unsigned int test=0;
+// 闹钟日期的变量
+unsigned int alarmYear=0;
+unsigned char alarmMonth=0,alarmDay=0,alarmHour=0,alarmMinute=0; 
+unsigned char alarmFlag = 0; // 闹钟标志位 0：关闭  1：开启
 
 unsigned char monthDay[] = {31,28,31,30,31,30,31,31,30,31,30,31}; // 二月暂时按平年算
 unsigned char getData;
 unsigned char sdat[64]={0x00};        // 数据缓存区
-unsigned char sendDat[8]={0x00};     // 发送数据缓冲区
+unsigned char sendDat[16]={0x00};     // 发送数据缓冲区
 unsigned char sendIndex = 0;         // 发送缓冲区指针
 unsigned char sp=0;   // 数据缓存区指针
 
+unsigned char buzzerKeyFlag = 0;
 unsigned char keyFlag=0;
 unsigned char countSecond = 0; // 用来计数3秒
 unsigned char ledTime = 0;
@@ -44,6 +49,9 @@ unsigned int getYearFromQuestion(unsigned char *point);
 void sendData(unsigned char *point);
 unsigned char getMonthFromQuestion(unsigned char *point);
 unsigned char getWorkDayFromMonth(unsigned int yearGo,unsigned char monthGo);
+void setAlarmClock(unsigned int yearGo,unsigned char monthGo,unsigned char dayGo,unsigned char hourGo,unsigned char minuteGo);
+void checkAlarmTime();
+void sendAllSDAT();
 
 int main()
 {
@@ -59,6 +67,7 @@ int main()
 		updateTimeData();   // 更新时间数据
 		modeFlag = checkKey_s1(&keyFlag,modeFlag); // 检测按键 S1
 		modeFlag = checkKey_s2(&keyFlag,modeFlag); // 检测按键 S2
+		closeBuzzer_s3(&buzzerKeyFlag);			   // 检测按键 S3，若按下，则关闭蜂鸣器
 		switch(modeFlag){
 			case 0: showTime_MS(); break;
 			case 1: showTime_Year(); break;
@@ -91,6 +100,10 @@ void updateTimeData()
 	{
 		second = 0;
 		minute ++;
+		if(alarmFlag)
+		{
+			checkAlarmTime(); // 检测闹钟	
+		}
 	}
 	if(minute >= 60)
 	{
@@ -211,7 +224,7 @@ void uart_func(void) interrupt 4
 		getData = SBUF;
 		sdat[sp] = getData;
 		sp++;
-		if(sp>=32) sp = 0;
+		if(sp>=64) sp = 0;
 		if(getData == 0x0A)
 		{
 			// 0x0A为结束标志位
@@ -228,6 +241,8 @@ void uart_func(void) interrupt 4
 				analyChar(sdat,length);
 				sendData(sendDat);	
 			} 
+			// test：发送数据缓冲区全部内容
+			//sendAllSDAT();
 			// 清空sdat缓冲区，sp清零
 			clearSDAT();
 			sp = 0;
@@ -237,7 +252,7 @@ void uart_func(void) interrupt 4
 	}
 	if(TI)
 	{
-		TI =0;
+		//TI =0;
 	}
 }
 // 处理接收来的数据
@@ -350,6 +365,7 @@ void analyChar(unsigned char *point,unsigned char length)
 {
 	unsigned int tempYear=0;
 	unsigned char tempMonth=0,tempDay=0,tempWeek=0;
+	unsigned char tempHour=0,tempMinute=0;
 
 	tempYear = getYearFromQuestion(point); // 获得年份
 	if(length == 16)
@@ -384,6 +400,23 @@ void analyChar(unsigned char *point,unsigned char length)
 		sendDat[0] = (tempDay /10) +0x30;
 		sendDat[1] = (tempDay %10) +0x30;
 		sendDat[2] = 0x3A;  // 0x3A为结束标志位	
+	}
+	else if(length == 42) 
+	{
+		// 即拓展4，闹钟功能。
+		// 要将 “请于” 删掉，直接从年份开始
+		tempMonth = getTimeFromData(&point[6]); // 获得月份	 
+		tempDay = getTimeFromData(&point[10]); // 获得日
+		tempHour = getTimeFromData(&point[14]); // 获得小时
+		tempMinute = getTimeFromData(&point[18]); // 获得分钟
+		// 设置定时闹钟
+		setAlarmClock(tempYear,tempMonth,tempDay,tempHour,tempMinute);
+		//test
+		/*	
+		sendDat[0] = (tempMinute /10) +0x30;
+		sendDat[1] = (tempMinute %10) +0x30;
+		sendDat[2] = 0x3A;  // 0x3A为结束标志位
+		*/	
 	}	
 }
 // 从问题中获得年份
@@ -406,16 +439,17 @@ unsigned int getYearFromQuestion(unsigned char *point)
 void sendData(unsigned char *point)
 {
 	unsigned char i;
-	unsigned char *temp;
+	unsigned char *temp = point;
 	// 因为发送缓冲区的数据是以 0x3A 来作为截止
 	while(*point != 0x3A)
 	{
 		SBUF = *point;
 		while(!TI);   // 当正在发送的时候等待 ,TI == 1 表示发送完成
+		TI = 0;
 		point++;
 	}
 	// 清除发送缓冲区
-	for(i=0;i<8;i++)
+	for(i=0;i<16;i++)
 	{
 		temp[i] = 0x00;
 	}		
@@ -444,5 +478,55 @@ unsigned char getWorkDayFromMonth(unsigned int yearGo,unsigned char monthGo)
 
 	return workDay;
 }
-
+// 设置定时闹钟
+void setAlarmClock(unsigned int yearGo,unsigned char monthGo,unsigned char dayGo,unsigned char hourGo,unsigned char minuteGo)
+{
+	alarmYear = yearGo;
+	alarmMonth = monthGo;
+	alarmDay = dayGo;
+	alarmHour = hourGo;
+	alarmMinute = minuteGo;
+	alarmFlag = 1; // 开启闹钟
+	// 通过串口会应，告诉设置好了
+	// 回答 it's-ok
+	sendDat[0] = 0x49; 
+	sendDat[1] = 0x74;
+	sendDat[2] = 0x60;
+	sendDat[3] = 0x73;
+	sendDat[4] = 0x2d;
+	sendDat[5] = 0x6f;
+	sendDat[6] = 0x6b;
+	sendDat[7] = 0x3A; // 结束标志			
+}
+// 用在updateTime中，用来检测当前时间是否达到预设的时间,达到则蜂鸣器响
+// 为了不要1秒检测一次，我们将这个放在60秒进位的时候检测一次
+void checkAlarmTime()
+{
+	if((alarmMinute == minute) && (alarmHour == hour))
+	{
+		if((alarmMonth == month) && (alarmDay == day))
+		{
+			if(alarmYear == year)
+			{
+				buzzer_open();	
+			}
+		}	
+	}
+	else
+	{
+		buzzer_close();
+		alarmFlag = 0; // 关闭闹钟
+	}
+}
+// 测试用的将数据缓冲区内的所有内容发送出去
+void sendAllSDAT()
+{
+	unsigned char i=0;
+	for(i=0;i<64;i++)
+	{
+		SBUF = sdat[i];
+		while(!TI);
+		TI = 0;
+	}
+}
 

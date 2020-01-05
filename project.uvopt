@@ -172,10 +172,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>16</ColumnNumber>
+      <ColumnNumber>55</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>422</TopLine>
-      <CurrentLine>445</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -1625,21 +1625,33 @@
       <Documents>
         <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>16</ColumnNumber>
-          <TopLine>422</TopLine>
-          <CurrentLine>445</CurrentLine>
+          <ColumnNumber>55</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>1</CurrentLine>
         </Doc>
         <Doc>
           <Name>LED.H</Name>
           <ColumnNumber>10</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
+          <TopLine>5</TopLine>
+          <CurrentLine>5</CurrentLine>
         </Doc>
         <Doc>
           <Name>DELAY.H</Name>
           <ColumnNumber>21</ColumnNumber>
           <TopLine>1</TopLine>
           <CurrentLine>15</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>BUZZER.H</Name>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>1</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>KEY.H</Name>
+          <ColumnNumber>11</ColumnNumber>
+          <TopLine>27</TopLine>
+          <CurrentLine>27</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>
