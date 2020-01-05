@@ -25,6 +25,25 @@ linking...
     SEGMENT: ?PR?_GETWEEK?MAIN
     CALLER1: ?PR?UART_FUNC?MAIN
     CALLER2: ?C_C51STARTUP
-Program Size: data=9.0 xdata=185 code=3330
+Program Size: data=9.0 xdata=185 code=3371
 creating hex file from "project"...
 "project" - 0 Error(s), 6 Warning(s).
+Build target 'Ä¿±ê 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_US?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SHOWSIXNUM?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SENDALLSDAT?MAIN
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_GETWEEK?MAIN
+    CALLER1: ?PR?T0_FUNC?MAIN
+    CALLER2: ?PR?UART_FUNC?MAIN
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_GETWEEK?MAIN
+    CALLER1: ?PR?UART_FUNC?MAIN
+    CALLER2: ?C_C51STARTUP
+Program Size: data=9.0 xdata=185 code=3371
+creating hex file from "project"...
+"project" - 0 Error(s), 5 Warning(s).

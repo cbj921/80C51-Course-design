@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:55:34 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
              -gned char minuteGo);
   53          void checkAlarmTime();
   54          void sendAllSDAT();
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 2   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:55:34 PAGE 2   
 
   55          
   56          int main()
@@ -126,7 +126,7 @@ line level    source
  114   1              {
  115   2                      hour = 0;
  116   2                      day++;
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 3   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:55:34 PAGE 3   
 
  117   2                      week = getWeek(year,month,day);          //更新星期
  118   2              }
@@ -190,7 +190,7 @@ line level    source
  176   2              }
  177   1      }
  178          // 计算星期函数
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 4   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:55:34 PAGE 4   
 
  179          unsigned char getWeek(unsigned int tYear,unsigned char tMonth,unsigned char tDay)
  180          {
@@ -254,7 +254,7 @@ line level    source
  238   3                              else
  239   3                              {
  240   4                                      // 进行字符分析，给出答案
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 5   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:55:34 PAGE 5   
 
  241   4                                      analyChar(sdat,length);
  242   4                                      sendData(sendDat);      
@@ -318,7 +318,7 @@ line level    source
  300   3                              case 5:
  301   3                                      second = getTimeFromData(dataGo);
  302   3                                      dataGo += 2;
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 6   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:55:34 PAGE 6   
 
  303   3                                      break;
  304   3                      }       
@@ -382,7 +382,7 @@ line level    source
  362   1      }
  363          // 字符分析
  364          void analyChar(unsigned char *point,unsigned char length)
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 7   
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:55:34 PAGE 7   
 
  365          {
  366   1              unsigned int tempYear=0;
@@ -403,165 +403,181 @@ line level    source
  381   3                              sendDat[0] = 0xB7;
  382   3                              sendDat[1] = 0xF1;
  383   3                      }
- 384   2                      sendDat[2] = 0x3A; // 0x3A为结束标志位
- 385   2              }
- 386   1              else if(length == 24)
- 387   1              {
- 388   2                      // 回答是星期几
- 389   2                      tempMonth = getTimeFromData(&point[6]); // 获得月份
- 390   2                      tempDay = getTimeFromData(&point[10]); // 获得日
- 391   2                      tempWeek = getWeek(tempYear,tempMonth,tempDay);
- 392   2                      sendDat[0] = tempWeek + 0x30;
- 393   2                      sendDat[1] = 0x3A; // 0x3A为结束标志位          
- 394   2              }
- 395   1              else if(length == 22)
- 396   1              {
- 397   2                      // 该问题少一个问号，为回答有几个工作日
- 398   2                      tempMonth = getTimeFromData(&point[6]); // 获得月份
- 399   2                      tempDay   = getWorkDayFromMonth(tempYear,tempMonth); // 这里用tempDay作为工作日的变量
- 400   2                      sendDat[0] = (tempDay /10) +0x30;
- 401   2                      sendDat[1] = (tempDay %10) +0x30;
- 402   2                      sendDat[2] = 0x3A;  // 0x3A为结束标志位 
- 403   2              }
- 404   1              else if(length == 42) 
- 405   1              {
- 406   2                      // 即拓展4，闹钟功能。
- 407   2                      // 要将 “请于” 删掉，直接从年份开始
- 408   2                      tempMonth = getTimeFromData(&point[6]); // 获得月份      
- 409   2                      tempDay = getTimeFromData(&point[10]); // 获得日
- 410   2                      tempHour = getTimeFromData(&point[14]); // 获得小时
- 411   2                      tempMinute = getTimeFromData(&point[18]); // 获得分钟
- 412   2                      // 设置定时闹钟
- 413   2                      setAlarmClock(tempYear,tempMonth,tempDay,tempHour,tempMinute);
- 414   2                      //test
- 415   2                      /*      
- 416   2                      sendDat[0] = (tempMinute /10) +0x30;
- 417   2                      sendDat[1] = (tempMinute %10) +0x30;
- 418   2                      sendDat[2] = 0x3A;  // 0x3A为结束标志位
- 419   2                      */      
- 420   2              }       
- 421   1      }
- 422          // 从问题中获得年份
- 423          unsigned int getYearFromQuestion(unsigned char *point)
- 424          {
- 425   1              // 因为年份就是前4位
- 426   1              unsigned char i=0,temp=0;
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 8   
+ 384   2                      sendDat[2] = 0x0D;
+ 385   2                      sendDat[3] = 0x0A; // 回车
+ 386   2                      sendDat[4] = 0x3A; // 0x3A为结束标志位
+ 387   2              }
+ 388   1              else if(length == 24)
+ 389   1              {
+ 390   2                      // 回答是星期几
+ 391   2                      tempMonth = getTimeFromData(&point[6]); // 获得月份
+ 392   2                      tempDay = getTimeFromData(&point[10]); // 获得日
+ 393   2                      tempWeek = getWeek(tempYear,tempMonth,tempDay);
+ 394   2                      sendDat[0] = 0xD0;
+ 395   2                      sendDat[1] = 0xC7; // 星
+ 396   2                      sendDat[2] = 0xC6;
+ 397   2                      sendDat[3] = 0xDA; // 期
+ 398   2                      sendDat[4] = tempWeek + 0x30;
+ 399   2                      sendDat[5] = 0x0D;
+ 400   2                      sendDat[6] = 0x0A; // 回车
+ 401   2                      sendDat[7] = 0x3A; // 0x3A为结束标志位          
+ 402   2              }
+ 403   1              else if(length == 22)
+ 404   1              {
+ 405   2                      // 该问题少一个问号，为回答有几个工作日
+ 406   2                      tempMonth = getTimeFromData(&point[6]); // 获得月份
+ 407   2                      tempDay   = getWorkDayFromMonth(tempYear,tempMonth); // 这里用tempDay作为工作日的变量
+ 408   2                      sendDat[0] = (tempDay /10) +0x30;
+ 409   2                      sendDat[1] = (tempDay %10) +0x30;
+ 410   2                      sendDat[2] = 0xCC;
+ 411   2                      sendDat[3] = 0xEC; // “天”
+ 412   2                      sendDat[4] = 0x0D;
+ 413   2                      sendDat[5] = 0x0A; // 回车
+ 414   2                      sendDat[6] = 0x3A;  // 0x3A为结束标志位 
+ 415   2              }
+ 416   1              else if(length == 42) 
+ 417   1              {
+ 418   2                      // 即拓展4，闹钟功能。
+ 419   2                      // 要将 “请于” 删掉，直接从年份开始
+ 420   2                      tempMonth = getTimeFromData(&point[6]); // 获得月份      
+ 421   2                      tempDay = getTimeFromData(&point[10]); // 获得日
+ 422   2                      tempHour = getTimeFromData(&point[14]); // 获得小时
+ 423   2                      tempMinute = getTimeFromData(&point[18]); // 获得分钟
+ 424   2                      // 设置定时闹钟
+ 425   2                      setAlarmClock(tempYear,tempMonth,tempDay,tempHour,tempMinute);
+ 426   2                      //test
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:55:34 PAGE 8   
 
- 427   1              unsigned int yearGo=0;
- 428   1              while(i<4)
- 429   1              {
- 430   2                      temp = *point - 0x30;
- 431   2                      yearGo *= 10;
- 432   2                      yearGo += temp;
- 433   2                      i++;
- 434   2                      point++;                        
- 435   2              }
- 436   1              return yearGo;  
- 437   1      }
- 438          // 发送发送缓冲区的内容
- 439          void sendData(unsigned char *point)
- 440          {
- 441   1              unsigned char i;
- 442   1              unsigned char *temp = point;
- 443   1              // 因为发送缓冲区的数据是以 0x3A 来作为截止
- 444   1              while(*point != 0x3A)
- 445   1              {
- 446   2                      SBUF = *point;
- 447   2                      while(!TI);   // 当正在发送的时候等待 ,TI == 1 表示发送完成
- 448   2                      TI = 0;
- 449   2                      point++;
- 450   2              }
- 451   1              // 清除发送缓冲区
- 452   1              for(i=0;i<16;i++)
- 453   1              {
- 454   2                      temp[i] = 0x00;
- 455   2              }               
- 456   1      }
- 457          // 从月份中获得工作日有几天
- 458          unsigned char getWorkDayFromMonth(unsigned int yearGo,unsigned char monthGo)
- 459          {
- 460   1              // 注意年份都应该用 int 型，否则会溢出
- 461   1              unsigned char tempWeek=0,tempDay=0;
- 462   1              char workDay = 0;
- 463   1              // 先获取该月的 1日是星期几
- 464   1              tempWeek = getWeek(yearGo,monthGo,1);
- 465   1              if(tempWeek == 0) tempWeek = 7;
- 466   1              // 再获取该月一共有几天
- 467   1              tempDay =  getMonthDay(yearGo,monthGo);
- 468   1              // 计算工作日
- 469   1              workDay += (6-tempWeek);
- 470   1              if(workDay == -1) workDay = 0;
- 471   1              // 计算剩余的天数
- 472   1              tempDay -= (8 - tempWeek);
- 473   1              // 计算剩余天数中的工作日
- 474   1              workDay += (tempDay/7)*5; 
- 475   1              tempDay = tempDay %7;
- 476   1              if(tempDay >5) tempDay = 5;
- 477   1              workDay += tempDay;
- 478   1      
- 479   1              return workDay;
- 480   1      }
- 481          // 设置定时闹钟
- 482          void setAlarmClock(unsigned int yearGo,unsigned char monthGo,unsigned char dayGo,unsigned char hourGo,unsi
+ 427   2                      /*      
+ 428   2                      sendDat[0] = (tempMinute /10) +0x30;
+ 429   2                      sendDat[1] = (tempMinute %10) +0x30;
+ 430   2                      sendDat[2] = 0x3A;  // 0x3A为结束标志位
+ 431   2                      */      
+ 432   2              }       
+ 433   1      }
+ 434          // 从问题中获得年份
+ 435          unsigned int getYearFromQuestion(unsigned char *point)
+ 436          {
+ 437   1              // 因为年份就是前4位
+ 438   1              unsigned char i=0,temp=0;
+ 439   1              unsigned int yearGo=0;
+ 440   1              while(i<4)
+ 441   1              {
+ 442   2                      temp = *point - 0x30;
+ 443   2                      yearGo *= 10;
+ 444   2                      yearGo += temp;
+ 445   2                      i++;
+ 446   2                      point++;                        
+ 447   2              }
+ 448   1              return yearGo;  
+ 449   1      }
+ 450          // 发送发送缓冲区的内容
+ 451          void sendData(unsigned char *point)
+ 452          {
+ 453   1              unsigned char i;
+ 454   1              unsigned char *temp = point;
+ 455   1              // 因为发送缓冲区的数据是以 0x3A 来作为截止
+ 456   1              while(*point != 0x3A)
+ 457   1              {
+ 458   2                      SBUF = *point;
+ 459   2                      while(!TI);   // 当正在发送的时候等待 ,TI == 1 表示发送完成
+ 460   2                      TI = 0;
+ 461   2                      point++;
+ 462   2              }
+ 463   1              // 清除发送缓冲区
+ 464   1              for(i=0;i<16;i++)
+ 465   1              {
+ 466   2                      temp[i] = 0x00;
+ 467   2              }               
+ 468   1      }
+ 469          // 从月份中获得工作日有几天
+ 470          unsigned char getWorkDayFromMonth(unsigned int yearGo,unsigned char monthGo)
+ 471          {
+ 472   1              // 注意年份都应该用 int 型，否则会溢出
+ 473   1              unsigned char tempWeek=0,tempDay=0;
+ 474   1              char workDay = 0;
+ 475   1              // 先获取该月的 1日是星期几
+ 476   1              tempWeek = getWeek(yearGo,monthGo,1);
+ 477   1              if(tempWeek == 0) tempWeek = 7;
+ 478   1              // 再获取该月一共有几天
+ 479   1              tempDay =  getMonthDay(yearGo,monthGo);
+ 480   1              // 计算工作日
+ 481   1              workDay += (6-tempWeek);
+ 482   1              if(workDay == -1) workDay = 0;
+ 483   1              // 计算剩余的天数
+ 484   1              tempDay -= (8 - tempWeek);
+ 485   1              // 计算剩余天数中的工作日
+ 486   1              workDay += (tempDay/7)*5; 
+ 487   1              tempDay = tempDay %7;
+ 488   1              if(tempDay >5) tempDay = 5;
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:55:34 PAGE 9   
+
+ 489   1              workDay += tempDay;
+ 490   1      
+ 491   1              return workDay;
+ 492   1      }
+ 493          // 设置定时闹钟
+ 494          void setAlarmClock(unsigned int yearGo,unsigned char monthGo,unsigned char dayGo,unsigned char hourGo,unsi
              -gned char minuteGo)
- 483          {
- 484   1              alarmYear = yearGo;
- 485   1              alarmMonth = monthGo;
- 486   1              alarmDay = dayGo;
- 487   1              alarmHour = hourGo;
-C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:36:27 PAGE 9   
-
- 488   1              alarmMinute = minuteGo;
- 489   1              alarmFlag = 1; // 开启闹钟
- 490   1              // 通过串口会应，告诉设置好了
- 491   1              // 回答 it's-ok
- 492   1              sendDat[0] = 0x49; 
- 493   1              sendDat[1] = 0x74;
- 494   1              sendDat[2] = 0x60;
- 495   1              sendDat[3] = 0x73;
- 496   1              sendDat[4] = 0x2d;
- 497   1              sendDat[5] = 0x6f;
- 498   1              sendDat[6] = 0x6b;
- 499   1              sendDat[7] = 0x3A; // 结束标志                  
- 500   1      }
- 501          // 用在updateTime中，用来检测当前时间是否达到预设的时间,达到则蜂鸣器响
- 502          // 为了不要1秒检测一次，我们将这个放在60秒进位的时候检测一次
- 503          void checkAlarmTime()
- 504          {
- 505   1              if((alarmMinute == minute) && (alarmHour == hour))
- 506   1              {
- 507   2                      if((alarmMonth == month) && (alarmDay == day))
- 508   2                      {
- 509   3                              if(alarmYear == year)
- 510   3                              {
- 511   4                                      buzzer_open();  
- 512   4                              }
- 513   3                      }       
- 514   2              }
- 515   1              else
- 516   1              {
- 517   2                      buzzer_close();
- 518   2                      alarmFlag = 0; // 关闭闹钟
- 519   2              }
- 520   1      }
- 521          // 测试用的将数据缓冲区内的所有内容发送出去
- 522          void sendAllSDAT()
- 523          {
- 524   1              unsigned char i=0;
- 525   1              for(i=0;i<64;i++)
- 526   1              {
- 527   2                      SBUF = sdat[i];
- 528   2                      while(!TI);
- 529   2                      TI = 0;
- 530   2              }
- 531   1      }
- 532          
+ 495          {
+ 496   1              alarmYear = yearGo;
+ 497   1              alarmMonth = monthGo;
+ 498   1              alarmDay = dayGo;
+ 499   1              alarmHour = hourGo;
+ 500   1              alarmMinute = minuteGo;
+ 501   1              alarmFlag = 1; // 开启闹钟
+ 502   1              // 通过串口会应，告诉设置好了
+ 503   1              // 回答 it's-ok
+ 504   1              sendDat[0] = 0x49; 
+ 505   1              sendDat[1] = 0x74;
+ 506   1              sendDat[2] = 0x60;
+ 507   1              sendDat[3] = 0x73;
+ 508   1              sendDat[4] = 0x2d;
+ 509   1              sendDat[5] = 0x6f;
+ 510   1              sendDat[6] = 0x6b;
+ 511   1              sendDat[7] = 0x0D;
+ 512   1              sendDat[8] = 0x0A; // 回车
+ 513   1              sendDat[9] = 0x3A; // 结束标志                  
+ 514   1      }
+ 515          // 用在updateTime中，用来检测当前时间是否达到预设的时间,达到则蜂鸣器响
+ 516          // 为了不要1秒检测一次，我们将这个放在60秒进位的时候检测一次
+ 517          void checkAlarmTime()
+ 518          {
+ 519   1              if((alarmMinute == minute) && (alarmHour == hour))
+ 520   1              {
+ 521   2                      if((alarmMonth == month) && (alarmDay == day))
+ 522   2                      {
+ 523   3                              if(alarmYear == year)
+ 524   3                              {
+ 525   4                                      buzzer_open();  
+ 526   4                              }
+ 527   3                      }       
+ 528   2              }
+ 529   1              else
+ 530   1              {
+ 531   2                      buzzer_close();
+ 532   2                      alarmFlag = 0; // 关闭闹钟
+ 533   2              }
+ 534   1      }
+ 535          // 测试用的将数据缓冲区内的所有内容发送出去
+ 536          void sendAllSDAT()
+ 537          {
+ 538   1              unsigned char i=0;
+ 539   1              for(i=0;i<64;i++)
+ 540   1              {
+ 541   2                      SBUF = sdat[i];
+ 542   2                      while(!TI);
+ 543   2                      TI = 0;
+ 544   2              }
+ 545   1      }
+ 546          
 *** WARNING C290 IN LINE 16 OF MAIN.C: missing return value
 
 
+C51 COMPILER V9.01   MAIN                                                                  01/05/2020 18:55:34 PAGE 10  
+
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   2751    ----
+   CODE SIZE        =   2792    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =    146      65
    PDATA SIZE       =   ----    ----

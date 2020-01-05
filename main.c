@@ -381,7 +381,9 @@ void analyChar(unsigned char *point,unsigned char length)
 			sendDat[0] = 0xB7;
 			sendDat[1] = 0xF1;
 		}
-		sendDat[2] = 0x3A; // 0x3A为结束标志位
+		sendDat[2] = 0x0D;
+		sendDat[3] = 0x0A; // 回车
+		sendDat[4] = 0x3A; // 0x3A为结束标志位
 	}
 	else if(length == 24)
 	{
@@ -389,8 +391,14 @@ void analyChar(unsigned char *point,unsigned char length)
 		tempMonth = getTimeFromData(&point[6]); // 获得月份
 		tempDay = getTimeFromData(&point[10]); // 获得日
 		tempWeek = getWeek(tempYear,tempMonth,tempDay);
-		sendDat[0] = tempWeek + 0x30;
-		sendDat[1] = 0x3A; // 0x3A为结束标志位		
+		sendDat[0] = 0xD0;
+		sendDat[1] = 0xC7; // 星
+		sendDat[2] = 0xC6;
+		sendDat[3] = 0xDA; // 期
+		sendDat[4] = tempWeek + 0x30;
+		sendDat[5] = 0x0D;
+		sendDat[6] = 0x0A; // 回车
+		sendDat[7] = 0x3A; // 0x3A为结束标志位		
 	}
 	else if(length == 22)
 	{
@@ -399,7 +407,11 @@ void analyChar(unsigned char *point,unsigned char length)
 		tempDay	  = getWorkDayFromMonth(tempYear,tempMonth); // 这里用tempDay作为工作日的变量
 		sendDat[0] = (tempDay /10) +0x30;
 		sendDat[1] = (tempDay %10) +0x30;
-		sendDat[2] = 0x3A;  // 0x3A为结束标志位	
+		sendDat[2] = 0xCC;
+		sendDat[3] = 0xEC; // “天”
+		sendDat[4] = 0x0D;
+		sendDat[5] = 0x0A; // 回车
+		sendDat[6] = 0x3A;  // 0x3A为结束标志位	
 	}
 	else if(length == 42) 
 	{
@@ -496,7 +508,9 @@ void setAlarmClock(unsigned int yearGo,unsigned char monthGo,unsigned char dayGo
 	sendDat[4] = 0x2d;
 	sendDat[5] = 0x6f;
 	sendDat[6] = 0x6b;
-	sendDat[7] = 0x3A; // 结束标志			
+	sendDat[7] = 0x0D;
+	sendDat[8] = 0x0A; // 回车
+	sendDat[9] = 0x3A; // 结束标志			
 }
 // 用在updateTime中，用来检测当前时间是否达到预设的时间,达到则蜂鸣器响
 // 为了不要1秒检测一次，我们将这个放在60秒进位的时候检测一次
