@@ -12,6 +12,15 @@
 unsigned int alarmYear=0;
 unsigned char alarmMonth=0,alarmDay=0,alarmHour=0,alarmMinute=0; 
 unsigned char alarmFlag = 0; // 闹钟标志位 0：关闭  1：开启
+// 码表的时间变量
+unsigned char stopWatch_minute = 0,stopWatch_second = 0; // 分别为 分钟，秒
+unsigned int stopWatch_ms = 0;  // 毫秒
+unsigned char stopWatchFlag = 0;  // 码表开启的标志位 0：关闭 1：开启
+unsigned char stopWatch_startFlag = 0; // 码表开始跑时间标志位
+unsigned char stopWatch_keyFlag_s1 = 0;  // 用来进行一次按键检测的标志位
+unsigned char stopWatch_keyFlag_s2 = 0;
+unsigned char stopWatch_keyFlag_s3 = 0;
+unsigned char stopWatch_keyFlag_s4 = 0;
 
 unsigned char monthDay[] = {31,28,31,30,31,30,31,31,30,31,30,31}; // 二月暂时按平年算
 unsigned char getData;
@@ -29,7 +38,7 @@ unsigned char ledTime = 0;
 unsigned char hour=0,minute=0,second=0,month=1,day=21,week = 0;
 unsigned int year=2020; 
 unsigned char T0Num = 0;
-unsigned char modeFlag = 0; // 0：显示分秒 1：显示公元年  2：显示月日
+unsigned char modeFlag = 0; // 0：显示分秒 1：显示公元年  2：显示月日  3:码表模式
 
 void updateTimeData();
 void showTime_MS();
@@ -52,6 +61,10 @@ unsigned char getWorkDayFromMonth(unsigned int yearGo,unsigned char monthGo);
 void setAlarmClock(unsigned int yearGo,unsigned char monthGo,unsigned char dayGo,unsigned char hourGo,unsigned char minuteGo);
 void checkAlarmTime();
 void sendAllSDAT();
+void showTime_stopWatch();
+void update_stopWatchTime();
+void showStopWatchTime();
+void stopWatch_sendTime();
 
 int main()
 {
@@ -65,13 +78,18 @@ int main()
 	while(1)
 	{	
 		updateTimeData();   // 更新时间数据
-		modeFlag = checkKey_s1(&keyFlag,modeFlag); // 检测按键 S1
-		modeFlag = checkKey_s2(&keyFlag,modeFlag); // 检测按键 S2
-		closeBuzzer_s3(&buzzerKeyFlag,&alarmFlag);			   // 检测按键 S3，若按下，则关闭蜂鸣器
+		if(!stopWatchFlag)  // 码表模式下不检测外部选择模式的按键了,只在码表函数中检测按键
+		{
+			modeFlag = checkKey_s1(&keyFlag,modeFlag); 				// 检测按键 S1
+			modeFlag = checkKey_s2(&keyFlag,modeFlag); 				// 检测按键 S2
+			closeBuzzer_s3(&buzzerKeyFlag,&alarmFlag);			    // 检测按键 S3，若按下，则关闭蜂鸣器
+			modeFlag = openStopWatch_s4(&stopWatchFlag,modeFlag);   // 检测按键4 是否开启码表模式	
+		}
 		switch(modeFlag){
 			case 0: showTime_MS(); break;
 			case 1: showTime_Year(); break;
 			case 2: showTime_MonthDay(); break;
+			case 3: showTime_stopWatch();break;	 // 码表功能，s1开启，s2清零，s3退出,s4计时发送到串口，
 		}	
 	}
 	return 0;
@@ -91,7 +109,12 @@ void T0_func(void) interrupt 1
 		second++;
 		showWeekLed();             // 让LED灯显示并循环
 	}
-	stayThreeSecond();             // 三秒计数器	
+	stayThreeSecond();             // 三秒计数器
+	// 开启码表计数的时候
+	if(stopWatch_startFlag)
+	{
+		stopWatch_ms += 50;
+	}	
 }
 // 更新时间数据
 void updateTimeData()
@@ -383,7 +406,7 @@ void analyChar(unsigned char *point,unsigned char length)
 		}
 		sendDat[2] = 0x0D;
 		sendDat[3] = 0x0A; // 回车
-		sendDat[4] = 0x3A; // 0x3A为结束标志位
+		sendDat[4] = 0x3B; // 0x3B为结束标志位
 	}
 	else if(length == 24)
 	{
@@ -398,7 +421,7 @@ void analyChar(unsigned char *point,unsigned char length)
 		sendDat[4] = tempWeek + 0x30;
 		sendDat[5] = 0x0D;
 		sendDat[6] = 0x0A; // 回车
-		sendDat[7] = 0x3A; // 0x3A为结束标志位		
+		sendDat[7] = 0x3B; // 0x3B为结束标志位		
 	}
 	else if(length == 22)
 	{
@@ -411,7 +434,7 @@ void analyChar(unsigned char *point,unsigned char length)
 		sendDat[3] = 0xEC; // “天”
 		sendDat[4] = 0x0D;
 		sendDat[5] = 0x0A; // 回车
-		sendDat[6] = 0x3A;  // 0x3A为结束标志位	
+		sendDat[6] = 0x3B;  // 0x3B为结束标志位	
 	}
 	else if(length == 42) 
 	{
@@ -427,7 +450,7 @@ void analyChar(unsigned char *point,unsigned char length)
 		/*	
 		sendDat[0] = (tempMinute /10) +0x30;
 		sendDat[1] = (tempMinute %10) +0x30;
-		sendDat[2] = 0x3A;  // 0x3A为结束标志位
+		sendDat[2] = 0x3B;  // 0x3B为结束标志位
 		*/	
 	}	
 }
@@ -452,8 +475,8 @@ void sendData(unsigned char *point)
 {
 	unsigned char i;
 	unsigned char *temp = point;
-	// 因为发送缓冲区的数据是以 0x3A 来作为截止
-	while(*point != 0x3A)
+	// 因为发送缓冲区的数据是以 0x3B 来作为截止
+	while(*point != 0x3B)
 	{
 		SBUF = *point;
 		while(!TI);   // 当正在发送的时候等待 ,TI == 1 表示发送完成
@@ -510,7 +533,7 @@ void setAlarmClock(unsigned int yearGo,unsigned char monthGo,unsigned char dayGo
 	sendDat[6] = 0x6b;
 	sendDat[7] = 0x0D;
 	sendDat[8] = 0x0A; // 回车
-	sendDat[9] = 0x3A; // 结束标志			
+	sendDat[9] = 0x3B; // 结束标志			
 }
 // 用在updateTime中，用来检测当前时间是否达到预设的时间,达到则蜂鸣器响
 // 为了不要1秒检测一次，我们将这个放在60秒进位的时候检测一次
@@ -542,5 +565,75 @@ void sendAllSDAT()
 		while(!TI);
 		TI = 0;
 	}
+}
+// 码表功能函数
+void showTime_stopWatch()
+{
+	// 更新码表的时间数据 
+	update_stopWatchTime();
+	// 显示码表时间数据
+	showStopWatchTime();
+	// 检测开始按键
+	stopWatch_startFlag = check_stopWatch_start(&stopWatch_keyFlag_s1,stopWatch_startFlag);
+	// 码表清零按键检测,并且让 startFlag 标志位置 0
+	stopWatch_startFlag = clear_stopWatch_time(&stopWatch_keyFlag_s2,stopWatch_startFlag,&stopWatch_minute,&stopWatch_second,&stopWatch_ms);
+	// 检测退出按键	  
+	if(stopWatch_startFlag)
+	{
+		stopWatch_startFlag = check_stopWatch_quit(stopWatch_startFlag,&modeFlag,&stopWatchFlag,&stopWatch_keyFlag_s3);	
+	}
+	// 检测按键s4 ，发送时间到串口
+	if(stopWatch_check_s4(&stopWatch_keyFlag_s4)&&stopWatch_startFlag)
+	{
+		stopWatch_sendTime();	
+	}			
+}
+// 更新码表的时间数据
+void update_stopWatchTime()
+{
+	if(stopWatch_ms >= 1000)
+	{
+		stopWatch_ms = 0;
+		stopWatch_second++;
+	}
+	if(stopWatch_second >= 60)
+	{
+		stopWatch_second = 0;
+		stopWatch_minute++;
+	}
+}
+// 显示码表时间数据
+void showStopWatchTime()
+{
+	unsigned char m1,m2,s1,s2,ms1,ms2;
+	m2 = stopWatch_minute %10; // 分钟个位
+	m1 = stopWatch_minute /10; // 分钟十位
+	s2 = stopWatch_second %10; // 秒个位
+	s1 = stopWatch_second /10; // 秒十位
+	// 毫秒只取 千位和百位
+	ms2 = stopWatch_ms/10 %10; // 毫秒十位
+	ms1 = stopWatch_ms/10 /10; // 毫秒百位
+	showSixNum(m1,m2,s1,s2,ms1,ms2); 
+}
+// 发送时间到串口
+void stopWatch_sendTime()
+{
+	unsigned char s_min,s_sec,s_ms;
+	s_min = stopWatch_minute;
+	s_sec = stopWatch_second;
+	s_ms = stopWatch_ms/10;
+	sendDat[0] = s_min /10 + 0x30;
+	sendDat[1] = s_min %10 + 0x30;
+	sendDat[2] = 0x3A ; 
+	sendDat[3] = s_sec /10 + 0x30;
+	sendDat[4] = s_sec %10 + 0x30;
+	sendDat[5] = 0x3A ;
+	sendDat[6] = s_ms /10 + 0x30;
+	sendDat[7] = s_ms %10 + 0x30;
+	// 回车结尾
+	sendDat[8] = 0x0D;
+	sendDat[9] = 0x0A;
+	sendDat[10] = 0x3B; // 结束标志位
+	sendData(sendDat);
 }
 
